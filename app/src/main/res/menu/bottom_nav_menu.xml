@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_account"
+        android:icon="@drawable/ic_baseline_account_box_24"
+        android:title="@string/account" />
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/ic_baseline_group_24"
+        android:title="@string/bands" />
+
+    <item
+        android:id="@+id/navigation_chat_list"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="@string/musicians" />
+
+</menu>

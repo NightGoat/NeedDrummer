@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="ru.nightgoat.needdrummer.models.Band" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.name}"
+                android:textSize="@dimen/text_18sp"
+                tools:text="Sleepy Door" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                chipItems="@{item.genres}"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{item.description}"
+                tools:text="Superjointritual stoner rock band.
+Influenced by bands like Dead Meadow, Black Sabbath, Pentagram, Reverend Bizarre, Sleep, Electric Wizard, Church of Misery, GreenMachine, Melvins, Elder, Acid King, Eyehategod, Boris, FuManchu, Kyuss, Pink Floyd, Jimi Hendrix, MC5, Bongzilla, Bongripper, Weedeater, Cathedral, Orange Goblin, Karma to burn and etc.
+Smoke Weed until your eyes bleed. " />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/looking"/>
+
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                chipInstruments="@{item.needInstruments}"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

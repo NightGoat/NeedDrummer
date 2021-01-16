@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">NeedDrummer</string>
+
+    <!--    Bottom nav menu -->
+    <string name="account">Аккаунт</string>
+    <string name="bands">Группы</string>
+    <string name="musicians">Музыканты</string>
+    <string name="looking">Ищу:</string>
+    <string name="playing">Играю на:</string>
+
+
+    <!--  Errors  -->
+    <string name="auth_error">Ошибка авторизации</string>
+    <string name="wrong_auth">Введены неверные email и/или пароль</string>
+</resources>
