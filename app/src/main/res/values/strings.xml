@@ -3,17 +3,21 @@
 
     <!-- Common  -->
     <string name="email">Email</string>
+    <string name="name">Имя</string>
     <string name="password">Пароль</string>
     <string name="login">Войти</string>
-    <string name="register">Зарегестрироваться</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="looking">Ищу:</string>
+    <string name="looking_for_band">Ищу группу</string>
+    <string name="looking_for_musician">Ищу музыканта</string>
+    <string name="playing">Играю на:</string>
+
 
     <!--    Bottom nav menu -->
     <string name="account">Аккаунт</string>
     <string name="bands">Группы</string>
     <string name="musicians">Музыканты</string>
-    <string name="looking">Ищу:</string>
-    <string name="playing">Играю на:</string>
-
 
     <!--  Errors  -->
     <string name="auth_error">Ошибка авторизации</string>

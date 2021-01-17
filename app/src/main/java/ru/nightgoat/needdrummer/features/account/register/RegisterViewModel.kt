@@ -1,4 +1,4 @@
-package ru.nightgoat.needdrummer.features.account.login
+package ru.nightgoat.needdrummer.features.account.register
 
 import androidx.lifecycle.MutableLiveData
 import ru.nightgoat.needdrummer.core.CoreViewModel
@@ -8,25 +8,21 @@ import ru.nightgoat.needdrummer.core.platform.orLeft
 import ru.nightgoat.needdrummer.core.utilities.extentions.launchUITryCatch
 import ru.nightgoat.needdrummer.models.User
 import ru.nightgoat.needdrummer.repos.Interfaces.IFirebaseRepo
+import ru.nightgoat.needdrummer.repos.Interfaces.IResourcesRepo
 import javax.inject.Inject
 
-class LoginViewModel : CoreViewModel() {
+class RegisterViewModel : CoreViewModel() {
 
     @Inject
     lateinit var firebaseRepo: IFirebaseRepo
 
+    @Inject
+    lateinit var resources: IResourcesRepo
+
     val email = MutableLiveData("")
     val password = MutableLiveData("")
 
-    fun onLoginBtnClicked() {
-        launchUITryCatch {
-            getLogin().handleFailureOrRight {
-
-            }
-        }
-    }
-
-    private suspend fun getLogin(): Either<Failure, User> {
+    private suspend fun register(): Either<Failure, User> {
         return email.value?.let { enteredEmail ->
             password.value?.let { enteredPassword ->
                 if (enteredEmail.isNotEmpty() && enteredPassword.isNotEmpty()) {
@@ -39,10 +35,8 @@ class LoginViewModel : CoreViewModel() {
     }
 
     fun onRegisterBtnClicked() {
-
-    }
-
-    fun onForgotPasswordBtnClicked() {
-
+        launchUITryCatch {
+            register()
+        }
     }
 }

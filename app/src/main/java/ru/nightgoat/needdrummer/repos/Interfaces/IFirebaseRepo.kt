@@ -10,4 +10,5 @@ import ru.nightgoat.needdrummer.models.User
  * */
 interface IFirebaseRepo {
     suspend fun login(email: String, password: String): Either<Failure, User>
+    suspend fun register(email: String, password: String): Either<Failure, User>
 }
