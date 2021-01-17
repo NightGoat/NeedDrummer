@@ -2,9 +2,11 @@ package ru.nightgoat.needdrummer.features.account.login
 
 import androidx.lifecycle.MutableLiveData
 import ru.nightgoat.needdrummer.core.CoreViewModel
+import ru.nightgoat.needdrummer.core.platform.Either
 import ru.nightgoat.needdrummer.core.platform.Failure
+import ru.nightgoat.needdrummer.core.platform.orLeft
 import ru.nightgoat.needdrummer.core.utilities.extentions.launchUITryCatch
-import ru.nightgoat.needdrummer.core.utilities.orIfNull
+import ru.nightgoat.needdrummer.models.User
 import ru.nightgoat.needdrummer.repos.Interfaces.IFirebaseRepo
 import ru.nightgoat.needdrummer.repos.Interfaces.IResourcesRepo
 import javax.inject.Inject
@@ -22,21 +24,21 @@ class LoginViewModel : CoreViewModel() {
 
     fun onLoginBtnClicked() {
         launchUITryCatch {
-            email.value?.let { enteredEmail ->
-                password.value?.let { enteredPassword ->
-                    if (enteredEmail.isNotEmpty() && enteredPassword.isNotEmpty()) {
-                        firebaseRepo.login(enteredEmail, enteredPassword).handleFailureOrRight {
+            getLogin().handleFailureOrRight {
 
-                        }
-                    } else {
-                        handleFailure(Failure.WrongAuth)
-                    }
-                }.orIfNull {
-                    handleFailure(Failure.AuthError)
-                }
-            }.orIfNull {
-                handleFailure(Failure.AuthError)
             }
         }
+    }
+
+    private suspend fun getLogin(): Either<Failure, User> {
+        return email.value?.let { enteredEmail ->
+            password.value?.let { enteredPassword ->
+                if (enteredEmail.isNotEmpty() && enteredPassword.isNotEmpty()) {
+                    firebaseRepo.login(enteredEmail, enteredPassword)
+                } else {
+                    Either.Left(Failure.WrongAuth)
+                }
+            }.orLeft(Failure.AuthError)
+        }.orLeft(Failure.AuthError)
     }
 }

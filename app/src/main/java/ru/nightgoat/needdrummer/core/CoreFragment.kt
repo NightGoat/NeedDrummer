@@ -16,7 +16,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import ru.nightgoat.needdrummer.BR
-import ru.nightgoat.needdrummer.core.di.CoreComponent
 import ru.nightgoat.needdrummer.core.platform.Failure
 import ru.nightgoat.needdrummer.core.platform.failure.FailureInterpreter
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingAdapter
@@ -29,15 +28,9 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
 
     var binding: T? = null
 
-    open val vm: S by lazy {
-        getViewModel()
-    }
+    abstract val vm: S
 
     private val keyHandlers = mutableMapOf<Int, RecyclerViewKeyHandler<*>>()
-
-    val coreComponent: CoreComponent by lazy {
-        (activity as CoreActivity<*>).coreComponent
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -176,7 +169,6 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
     @LayoutRes
     abstract fun getLayoutId(): Int
 
-    abstract fun getViewModel(): S
 
     override fun onDestroy() {
         binding?.unbind()

@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">NeedDrummer</string>
 
+    <!-- Common  -->
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="login">Войти</string>
+    <string name="register">Зарегестрироваться</string>
+
     <!--    Bottom nav menu -->
     <string name="account">Аккаунт</string>
     <string name="bands">Группы</string>
