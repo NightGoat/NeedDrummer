@@ -21,11 +21,10 @@ def versions = [:]
 versions.arch_core = "2.1.0"
 versions.lifecycle = "2.2.0"
 versions.support = "1.2.0"
-versions.dagger = "2.28.1"
 versions.constraint_layout = "2.0.0"
 versions.android_gradle_plugin = '4.0.2'
-
-versions.kotlin = "1.4.10"
+versions.kotPref = "2.12.0"
+versions.kotlin = "1.4.31"
 versions.kotlin_coroutines = "1.3.9"
 versions.kotlin_viewmodel_ktx = "2.1.0" // На версии 2.2.0 некорректно работает viewModelScope.launch
 versions.kotlin_core_ktx = "1.3.1"
@@ -35,6 +34,7 @@ versions.gson = "2.8.6"
 versions.firebase_crashlytics = "17.2.2"
 versions.firebase = "17.5.0"
 versions.room = "2.2.5"
+versions.timber = "4.7.1"
 
 def deps = [:]
 
@@ -66,14 +66,10 @@ def arch_core = [:]
 arch_core.testing = "androidx.arch.core:core-testing:$versions.arch_core"
 deps.arch_core = arch_core
 
-def dagger = [:]
-dagger.runtime = "com.google.dagger:dagger:$versions.dagger"
-dagger.android = "com.google.dagger:dagger-android:$versions.dagger"
-dagger.android_support = "com.google.dagger:dagger-android-support:$versions.dagger"
-dagger.compiler = "com.google.dagger:dagger-compiler:$versions.dagger"
-dagger.android_support_compiler = "com.google.dagger:dagger-android-processor:$versions.dagger"
-
-deps.dagger = dagger
+def hilt = [:]
+hilt.core = "com.google.dagger:hilt-android:$hilt_version"
+hilt.compilier = "com.google.dagger:hilt-compiler:$hilt_version"
+deps.hilt = hilt
 
 def espresso = [:]
 espresso.core = "androidx.test.espresso:espresso-core:$versions.espresso"
@@ -108,8 +104,14 @@ deps.mock_web_server = "com.squareup.okhttp3:mockwebserver:$versions.mockwebserv
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.crashlytics = "com.google.firebase:firebase-crashlytics-ktx:$versions.firebase_crashlytics"
-deps.firebase = "com.google.firebase:firebase-analytics-ktx:$versions.firebase"
 
+deps.firebase_analytics = "com.google.firebase:firebase-analytics-ktx:$versions.firebase"
+
+def common = [:]
+common.kotpref = "com.chibatching.kotpref:kotpref:$versions.kotPref"
+common.kotpref_liveData = "com.chibatching.kotpref:livedata-support:$versions.kotPref"
+common.timber = "com.jakewharton.timber:timber:$versions.timber"
+deps.common = common
 
 ext.deps = deps
 

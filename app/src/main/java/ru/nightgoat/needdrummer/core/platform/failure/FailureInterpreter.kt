@@ -2,7 +2,7 @@ package ru.nightgoat.needdrummer.core.platform.failure
 
 import android.content.Context
 import ru.nightgoat.needdrummer.R
-import ru.nightgoat.needdrummer.core.platform.Failure
+import ru.nightgoat.needdrummer.core.platform.models.Failure
 
 class FailureInterpreter (
     val context: Context

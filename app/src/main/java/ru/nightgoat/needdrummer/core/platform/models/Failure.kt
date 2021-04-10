@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ru.nightgoat.needdrummer.core.platform
+package ru.nightgoat.needdrummer.core.platform.models
 
 /**
  * Base Class for handling errors/failures/exceptions.

@@ -1,7 +1,7 @@
 package ru.nightgoat.needdrummer.repos.Interfaces
 
 import ru.nightgoat.needdrummer.core.platform.Either
-import ru.nightgoat.needdrummer.core.platform.Failure
+import ru.nightgoat.needdrummer.core.platform.models.Failure
 import ru.nightgoat.needdrummer.models.User
 
 /**

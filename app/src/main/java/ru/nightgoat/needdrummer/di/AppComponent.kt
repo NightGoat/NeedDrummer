@@ -1,7 +1,7 @@
 package ru.nightgoat.needdrummer.di
 
 import dagger.Component
-import ru.nightgoat.needdrummer.MainActivity
+import ru.nightgoat.needdrummer.activity.MainActivity
 import ru.nightgoat.needdrummer.core.di.CoreComponent
 import ru.nightgoat.needdrummer.features.findBand.FindBandViewModel
 

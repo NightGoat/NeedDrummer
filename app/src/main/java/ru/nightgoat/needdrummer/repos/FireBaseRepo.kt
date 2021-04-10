@@ -3,12 +3,12 @@ package ru.nightgoat.needdrummer.repos
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 import ru.nightgoat.needdrummer.core.platform.Either
-import ru.nightgoat.needdrummer.core.platform.Failure
+import ru.nightgoat.needdrummer.core.platform.models.Failure
 import ru.nightgoat.needdrummer.core.platform.orLeft
 import ru.nightgoat.needdrummer.models.User
 import ru.nightgoat.needdrummer.repos.Interfaces.IFirebaseRepo
 
-class FireBaseRepo() : IFirebaseRepo {
+class FireBaseRepo : IFirebaseRepo {
 
     private val auth = FirebaseAuth.getInstance()
 

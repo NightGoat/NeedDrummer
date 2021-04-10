@@ -1,26 +1,24 @@
 package ru.nightgoat.needdrummer.core
 
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lenta.shared.utilities.Logg
-import ru.nightgoat.needdrummer.core.platform.Either
-import ru.nightgoat.needdrummer.core.platform.Failure
-import ru.nightgoat.needdrummer.core.platform.SingleLiveEvent
+import ru.nightgoat.needdrummer.core.platform.models.Failure
+import ru.nightgoat.needdrummer.core.platform.models.NavigationResult
 
-abstract class CoreViewModel: ViewModel() {
+abstract class CoreViewModel: ViewModel(), LifecycleObserver {
 
-    val failure = SingleLiveEvent<Failure>()
+    val failure = MutableLiveData<Failure>()
     val selectedPage = MutableLiveData(0)
+    val navigationLiveData = MutableLiveData<NavigationResult>()
 
     open fun handleFailure(failure: Failure) {
         Logg.e { "handleFailure: $failure" }
         this.failure.postValue(failure)
     }
 
-    fun <L: Failure, R> Either<L, R>.handleFailureOrRight(fn: (R) -> Unit) {
-        return when (this) {
-            is Either.Left -> handleFailure(this.a)
-            is Either.Right -> fn(this.b)
-        }
+    fun goBack() {
+        navigationLiveData.value = NavigationResult.NavigateBack
     }
 }

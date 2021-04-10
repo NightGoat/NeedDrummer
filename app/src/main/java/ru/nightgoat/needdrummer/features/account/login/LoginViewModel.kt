@@ -3,7 +3,7 @@ package ru.nightgoat.needdrummer.features.account.login
 import androidx.lifecycle.MutableLiveData
 import ru.nightgoat.needdrummer.core.CoreViewModel
 import ru.nightgoat.needdrummer.core.platform.Either
-import ru.nightgoat.needdrummer.core.platform.Failure
+import ru.nightgoat.needdrummer.core.platform.models.Failure
 import ru.nightgoat.needdrummer.core.platform.orLeft
 import ru.nightgoat.needdrummer.core.utilities.extentions.launchUITryCatch
 import ru.nightgoat.needdrummer.models.User

@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.nightgoat.needdrummer.core.CoreViewModel
-import ru.nightgoat.needdrummer.core.platform.Failure
+import ru.nightgoat.needdrummer.core.platform.models.Failure
 
 fun CoreViewModel.launchUITryCatch(
     start: CoroutineStart = CoroutineStart.DEFAULT,

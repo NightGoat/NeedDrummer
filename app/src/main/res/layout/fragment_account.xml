@@ -7,9 +7,6 @@
             name="vm"
             type="ru.nightgoat.needdrummer.features.account.login.LoginViewModel" />
 
-        <variable
-            name="rvConfig"
-            type="ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingRecyclerViewConfig" />
     </data>
 
     <LinearLayout

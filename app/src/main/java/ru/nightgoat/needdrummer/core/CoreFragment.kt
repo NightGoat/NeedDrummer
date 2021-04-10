@@ -5,24 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.EditText
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import ru.nightgoat.needdrummer.BR
-import ru.nightgoat.needdrummer.core.platform.Failure
 import ru.nightgoat.needdrummer.core.platform.failure.FailureInterpreter
+import ru.nightgoat.needdrummer.core.platform.models.Failure
+import ru.nightgoat.needdrummer.core.platform.models.NavigationResult
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingAdapter
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingRecyclerViewConfig
 import ru.nightgoat.needdrummer.core.utilities.databinding.RecyclerViewKeyHandler
-import ru.nightgoat.needdrummer.core.utilities.extentions.implementationOf
-import ru.nightgoat.needdrummer.core.utilities.extentions.showShortToast
+import ru.nightgoat.needdrummer.core.utilities.extentions.*
 
 abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment() {
 
@@ -31,10 +31,28 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
     abstract val vm: S
 
     private val keyHandlers = mutableMapOf<Int, RecyclerViewKeyHandler<*>>()
+    open val canPressBack = true
+
+    val navController: NavController
+        get() = this.findNavController()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycle.addObserver(vm)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vm.failure.observe(viewLifecycleOwner, Observer { showFailureHandler(it) })
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        observeFailure()
+
+    }
+
+    private fun observeFailure() {
+        onAnyChange(vm.failure, ::showFailureHandler)
     }
 
     private fun showFailureHandler(failure: Failure) {
@@ -43,7 +61,47 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
         showShortToast(message)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private fun observeNavigation() {
+        onAnyChange(vm.navigationLiveData, ::handleNavigation)
+    }
+
+    private fun handleNavigation(result: NavigationResult) {
+        when (result) {
+            is NavigationResult.NavigateTo -> {
+                //hideLoading()
+                val direction = result.direction
+                navigateTo(direction)
+            }
+            is NavigationResult.NavigateBy ->navigateBy(result.navigateResourceId)
+            is NavigationResult.NavigatePopTo -> navigatePopTo(result.navigateResourceId, result.isInclusive)
+
+            NavigationResult.NavigateBack -> onBackPressed()
+            NavigationResult.NavigateNext -> onNextPressed()
+        }
+    }
+
+    fun showLoading() {
+        showLayoutLoading()
+    }
+
+    protected fun showLayoutLoading() {
+        hideKeyboard()
+        //errorViewLayout?.hide() TODO
+        //contentViewLayout?.hide() TODO
+        //loadingViewLayout?.show() TODO
+    }
+
+    open fun onBackPressed(): Boolean {
+        return if (!canPressBack) true else navController.popBackStack()
+    }
+
+    open fun onNextPressed() = Unit
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         return binding?.run {
             setVariable(BR.vm, vm)
@@ -84,7 +142,7 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
                     onItemBindKeyHandler?.invoke(binding, position, keyHandler)
                 }
             },
-            onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            onItemClickListener = { _, _, position, _ ->
                 onItemClick?.invoke(position, keyHandler)
             }
         )
@@ -140,7 +198,11 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
         return keyHandler
     }
 
-    protected open fun onItemBindKeyHandlerHandler(bindItem: ViewBinding, position: Int, keyHandler: RecyclerViewKeyHandler<*>?) {
+    protected open fun onItemBindKeyHandlerHandler(
+        bindItem: ViewBinding,
+        position: Int,
+        keyHandler: RecyclerViewKeyHandler<*>?
+    ) {
         keyHandler?.let {
             bindItem.root.isSelected = it.isSelected(position)
         }
