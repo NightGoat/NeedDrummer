@@ -26,7 +26,7 @@
             app:items="@{vm.bands}"
             app:rv_config="@{rvConfig}"
             tools:itemCount="2"
-            tools:listitem="@layout/item_band" />
+            tools:listitem="@layout/item_musician" />
 
 
     </FrameLayout>

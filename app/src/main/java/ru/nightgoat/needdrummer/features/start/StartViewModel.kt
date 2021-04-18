@@ -12,9 +12,6 @@ class StartViewModel : CoreViewModel(){
     @Inject
     lateinit var authPreference: IAuthPreference
 
-    init {
-
-    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun getStartPageNavigation() {

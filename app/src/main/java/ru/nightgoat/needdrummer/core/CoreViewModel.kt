@@ -3,22 +3,34 @@ package ru.nightgoat.needdrummer.core
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lenta.shared.utilities.Logg
-import ru.nightgoat.needdrummer.core.platform.models.Failure
-import ru.nightgoat.needdrummer.core.platform.models.NavigationResult
+import ru.nightgoat.needdrummer.core.platform.models.AnyResult
+import ru.nightgoat.needdrummer.core.platform.models.SResult
 
 abstract class CoreViewModel: ViewModel(), LifecycleObserver {
 
-    val failure = MutableLiveData<Failure>()
     val selectedPage = MutableLiveData(0)
-    val navigationLiveData = MutableLiveData<NavigationResult>()
-
-    open fun handleFailure(failure: Failure) {
-        Logg.e { "handleFailure: $failure" }
-        this.failure.postValue(failure)
-    }
+    val navigationLiveData = MutableLiveData<SResult.NavigateResult>()
+    val resultLiveData = MutableLiveData<SResult.Success<Any>>()
+    val errorLiveData = MutableLiveData<SResult.ErrorResult>()
+    val loadingLiveData = MutableLiveData<SResult.Loading>()
+    val toastLiveData = MutableLiveData<SResult.Toast>()
 
     fun goBack() {
-        navigationLiveData.value = NavigationResult.NavigateBack
+        navigationLiveData.value = SResult.NavigateResult.NavigateBack
+    }
+
+    fun goTo(result: SResult.NavigateResult) {
+        navigationLiveData.value = result
+    }
+
+    suspend fun handleResult(result: AnyResult) {
+        when (result) {
+            is SResult.NavigateResult -> navigationLiveData.postValue(result)
+            is SResult.ErrorResult -> errorLiveData.postValue(result)
+            is SResult.Success -> resultLiveData.postValue(result)
+            is SResult.Loading -> loadingLiveData.postValue(result)
+            is SResult.Toast -> toastLiveData.postValue(result)
+            else -> Unit
+        }
     }
 }

@@ -6,5 +6,5 @@ import ru.nightgoat.needdrummer.models.Band
 
 class FindBandViewModel: CoreViewModel() {
 
-    val bands = MutableLiveData<Band>()
+    val bands = MutableLiveData<List<Band>>()
 }

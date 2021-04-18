@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_auth"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ru.nightgoat.needdrummer.features.account.login.LoginFragment"
+        android:label="loginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/showSelectMarketScreen"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPassword"
+            app:destination="@id/forgotPassword" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="ru.nightgoat.needdrummer.features.account.register.RegisterFragment"
+        android:label="registerFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPassword"
+        android:name="ru.nightgoat.needdrummer.features.account.forgot_password.ForgotPasswordFragment"
+        android:label="FmpSyncFragment"
+        tools:layout="@layout/fragment_forgot_password">
+        <action
+            android:id="@+id/showMainMenu"
+            app:destination="@id/navigation_main"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <include app:graph="@navigation/navigation_main" />
+
+</navigation>

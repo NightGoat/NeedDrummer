@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_nav">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/startFragment"
+    >
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="ru.nightgoat.needdrummer.features.start.StartFragment"
+        android:label="StartFragment"
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/showAuthFragment"
+            app:destination="@id/navigation_auth"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <include app:graph="@navigation/navigation_auth" />
 
 </navigation>

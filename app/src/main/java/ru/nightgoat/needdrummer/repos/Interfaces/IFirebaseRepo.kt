@@ -1,14 +1,13 @@
 package ru.nightgoat.needdrummer.repos.Interfaces
 
-import ru.nightgoat.needdrummer.core.platform.Either
-import ru.nightgoat.needdrummer.core.platform.models.Failure
-import ru.nightgoat.needdrummer.models.User
+import ru.nightgoat.needdrummer.core.platform.models.AnyResult
 
 /**
  * child:
  * @see ru.nightgoat.needdrummer.repos.FireBaseRepo
  * */
 interface IFirebaseRepo {
-    suspend fun login(email: String, password: String): Either<Failure, User>
-    suspend fun register(email: String, password: String): Either<Failure, User>
+    suspend fun login(email: String, password: String): AnyResult
+    suspend fun register(email: String, password: String): AnyResult
+    suspend fun resetPassword(email: String): AnyResult
 }

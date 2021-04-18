@@ -1,4 +1,4 @@
-package ru.nightgoat.needdrummer.features.account.login
+package ru.nightgoat.needdrummer.features.account.forgot_password
 
 import androidx.lifecycle.MutableLiveData
 import ru.nightgoat.needdrummer.core.CoreViewModel
@@ -8,37 +8,27 @@ import ru.nightgoat.needdrummer.core.utilities.extentions.launchUITryCatch
 import ru.nightgoat.needdrummer.repos.Interfaces.IFirebaseRepo
 import javax.inject.Inject
 
-class LoginViewModel : CoreViewModel() {
+class ForgotPasswordViewModel : CoreViewModel() {
 
     @Inject
     lateinit var firebaseRepo: IFirebaseRepo
 
     val email = MutableLiveData("")
-    val password = MutableLiveData("")
 
-    fun onLoginBtnClicked() {
-        launchUITryCatch {
-            getLogin()
-        }
-    }
-
-    private suspend fun getLogin(): AnyResult {
+    private suspend fun resetPassword(): AnyResult {
         return email.value?.let { enteredEmail ->
-            password.value?.let { enteredPassword ->
-                if (enteredEmail.isNotEmpty() && enteredPassword.isNotEmpty()) {
-                    firebaseRepo.login(enteredEmail, enteredPassword)
+                if (enteredEmail.isNotEmpty()) {
+                    firebaseRepo.resetPassword(enteredEmail)
                 } else {
                     SResult.ErrorResult.AuthError
                 }
-            } ?: SResult.ErrorResult.AuthError
         } ?: SResult.ErrorResult.AuthError
     }
 
     fun onRegisterBtnClicked() {
+        launchUITryCatch {
+            handleResult(resetPassword())
 
-    }
-
-    fun onForgotPasswordBtnClicked() {
-
+        }
     }
 }

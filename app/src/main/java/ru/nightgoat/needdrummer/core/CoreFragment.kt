@@ -16,9 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import ru.nightgoat.needdrummer.BR
-import ru.nightgoat.needdrummer.core.platform.failure.FailureInterpreter
-import ru.nightgoat.needdrummer.core.platform.models.Failure
-import ru.nightgoat.needdrummer.core.platform.models.NavigationResult
+import ru.nightgoat.needdrummer.R
+import ru.nightgoat.needdrummer.core.platform.models.SResult
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingAdapter
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingRecyclerViewConfig
 import ru.nightgoat.needdrummer.core.utilities.databinding.RecyclerViewKeyHandler
@@ -36,6 +35,27 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
     val navController: NavController
         get() = this.findNavController()
 
+    private val contentView: View?
+        get() = this.view
+
+    /**
+     * Content Layout
+     */
+    private val contentViewLayout: View?
+        get() = contentView?.findViewById(R.id.contentLayout)
+
+    /**
+     * Loading Layout
+     */
+    private val loadingViewLayout: View?
+        get() = contentView?.findViewById(R.id.loadingLayout)
+
+    /**
+     * Error Layout
+     */
+    private val errorViewLayout: View?
+        get() = contentView?.findViewById(R.id.errorLayout)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(vm)
@@ -48,51 +68,83 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
 
     private fun observeViewModel() {
         observeFailure()
-
+        observeNavigation()
+        observeLoading()
+        observeToast()
+        observeResult()
     }
+
+    private fun observeToast() {
+        onAnyChange(vm.toastLiveData, ::handleToast)
+    }
+
+    private fun handleToast(result: SResult.Toast) {
+        showShortToast(result.message)
+    }
+
+    private fun observeResult() {
+        onAnyChange(vm.resultLiveData, ::handleSuccess)
+    }
+
+    open fun handleSuccess(result: SResult.Success<Any>) = Unit
 
     private fun observeFailure() {
-        onAnyChange(vm.failure, ::showFailureHandler)
+        onAnyChange(vm.errorLiveData, ::showFailureHandler)
     }
 
-    private fun showFailureHandler(failure: Failure) {
-        val interpreter = FailureInterpreter(requireContext())
-        val message = interpreter.getFailureDescription(failure)
-        showShortToast(message)
+    private fun showFailureHandler(error: SResult.ErrorResult) {
+        showShortToast(error.message.orEmpty())
     }
 
     private fun observeNavigation() {
         onAnyChange(vm.navigationLiveData, ::handleNavigation)
     }
 
-    private fun handleNavigation(result: NavigationResult) {
+    private fun handleNavigation(result: SResult.NavigateResult) {
         when (result) {
-            is NavigationResult.NavigateTo -> {
+            is SResult.NavigateResult.NavigateTo -> {
                 //hideLoading()
                 val direction = result.direction
                 navigateTo(direction)
             }
-            is NavigationResult.NavigateBy ->navigateBy(result.navigateResourceId)
-            is NavigationResult.NavigatePopTo -> navigatePopTo(result.navigateResourceId, result.isInclusive)
+            is SResult.NavigateResult.NavigateBy -> navigateBy(result.navigateResourceId)
+            is SResult.NavigateResult.NavigatePopTo -> navigatePopTo(
+                result.navigateResourceId,
+                result.isInclusive
+            )
 
-            NavigationResult.NavigateBack -> onBackPressed()
-            NavigationResult.NavigateNext -> onNextPressed()
+            SResult.NavigateResult.NavigateBack -> onBackPressed()
+            SResult.NavigateResult.NavigateNext -> onNextPressed()
         }
     }
 
-    fun showLoading() {
-        showLayoutLoading()
+    private fun observeLoading() {
+        onAnyChange(vm.loadingLiveData, ::showLoading)
     }
 
-    protected fun showLayoutLoading() {
+    private fun showLoading(loadingState: SResult.Loading) {
+        when (loadingState) {
+            is SResult.Loading.Show -> showLayoutLoading()
+            is SResult.Loading.Hide -> hideLayoutLoading()
+        }
+    }
+
+    private fun showLayoutLoading() {
         hideKeyboard()
-        //errorViewLayout?.hide() TODO
-        //contentViewLayout?.hide() TODO
-        //loadingViewLayout?.show() TODO
+        errorViewLayout?.hide()
+        contentViewLayout?.hide()
+        loadingViewLayout?.show()
     }
 
     open fun onBackPressed(): Boolean {
         return if (!canPressBack) true else navController.popBackStack()
+    }
+
+    private fun hideLayoutLoading() {
+        hideKeyboard()
+        errorViewLayout?.hide()
+        loadingViewLayout?.hide()
+        contentViewLayout?.show()
     }
 
     open fun onNextPressed() = Unit

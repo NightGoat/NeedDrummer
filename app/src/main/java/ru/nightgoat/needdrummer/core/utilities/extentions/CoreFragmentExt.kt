@@ -5,15 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import ru.nightgoat.needdrummer.R
-import ru.nightgoat.needdrummer.activity.MainActivity
 import ru.nightgoat.needdrummer.core.CoreFragment
 import ru.nightgoat.needdrummer.core.CoreViewModel
-import ru.nightgoat.needdrummer.di.AppComponent
 import timber.log.Timber
-
-fun CoreFragment<*, *>.getAppComponent(): AppComponent? {
-    return activity.implementationOf(MainActivity::class.java)?.appComponent
-}
 
 fun <T : ViewDataBinding, S : CoreViewModel>CoreFragment<T, S>.popBackStack() {
     navController.popBackStack()
