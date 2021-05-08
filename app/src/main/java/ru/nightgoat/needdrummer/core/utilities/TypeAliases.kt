@@ -26,6 +26,7 @@ typealias AnyResultMutableLiveData = MutableLiveData<AnyResult>
 typealias ResultLiveData<T> = LiveData<SResult<T>>
 typealias ResultListLiveData<T> = LiveData<SResult<List<T>>>
 typealias ResultMutableLiveData<T> = MutableLiveData<SResult<T>>
+typealias ErrorResult = SResult.ErrorResult.Error
 
 typealias ResultList<T> = SResult<List<T>>
 typealias ResultMutableList<T> = SResult<MutableList<T>>

@@ -38,7 +38,8 @@ def versions = [
         hilt                         : "1.0.0",
         android_hilt                 : "2.35.1",
         navigation                   : "2.3.5",
-        input_mask                   : "6.0.0"
+        input_mask                   : "6.0.0",
+        ktlint                       : "10.0.0"
 ]
 
 def deps = [:]
@@ -70,6 +71,8 @@ deps.lifecycle = lifecycle
 def navigation = [:]
 navigation.fragment_ktx = "androidx.navigation:navigation-fragment-ktx:$versions.navigation"
 navigation.ui_ktx = "androidx.navigation:navigation-ui-ktx:$versions.navigation"
+navigation.dynamic_feature = "androidx.navigation:navigation-ui-ktx:$versions.navigation"
+navigation.safe_args = "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
 deps.navigation = navigation
 
 def arch_core = [:]
@@ -117,7 +120,6 @@ deps.common = common
 def firebase = [:]
 firebase.analytics = "com.google.firebase:firebase-analytics-ktx:$versions.firebase"
 firebase.crashlytics = "com.google.firebase:firebase-crashlytics-ktx:$versions.firebase_crashlytics"
-firebase.auth =
 deps.firebase = firebase
 
 deps.gson = "com.google.code.gson:gson:$versions.gson"
@@ -129,5 +131,6 @@ deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.gradle"
 deps.google_gms = "com.google.gms:google-services:$versions.google_gms"
 deps.input_mask = "com.redmadrobot:input-mask-android:$versions.input_mask"
+deps.ktlint_gradle = "org.jlleitschuh.gradle:ktlint-gradle:$versions.ktlint"
 ext.deps = deps
 

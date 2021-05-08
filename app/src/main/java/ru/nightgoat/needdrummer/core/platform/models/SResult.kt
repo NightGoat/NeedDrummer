@@ -1,6 +1,7 @@
 package ru.nightgoat.needdrummer.core.platform.models
 
 import androidx.navigation.NavDirections
+import ru.nightgoat.needdrummer.models.states.ErrorType
 
 typealias AnyResult = SResult<Any>
 
@@ -48,25 +49,25 @@ sealed class SResult<out T : Any> : IResult<T> {
 
     //---- Error States
     sealed class ErrorResult : SResult<Nothing>() {
-        open val message: String? = null
+        open val message: String = ""
         open val exception: Throwable? = null
+        open val type: ErrorType = ErrorType.ORDINARY
         override var isNeedHandle = true
 
         data class Error(
-            override val message: String? = null,
+            override val message: String = "",
             val code: Int = 0,
-            override val exception: Throwable? = null
+            override val exception: Throwable? = null,
+            override val type: ErrorType = ErrorType.ORDINARY
         ) : ErrorResult()
 
         data class Alert(
-            override val message: String? = null,
+            override val message: String = "",
             val dialogTitle: Any? = null,
             override val exception: Throwable? = null,
             val okHandler: (() -> Unit)? = null,
             val okTitle: Int? = null
         ) : ErrorResult()
-
-        object AuthError: ErrorResult()
     }
 
 }

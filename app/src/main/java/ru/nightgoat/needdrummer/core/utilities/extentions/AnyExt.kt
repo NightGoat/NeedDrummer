@@ -8,3 +8,6 @@ fun <T> Any?.implementationOf(clazz: Class<T>): T? {
         return null
     }
 }
+
+inline fun <reified T, reified R> R.unsafeLazy(noinline init: () -> T): Lazy<T> =
+    lazy(LazyThreadSafetyMode.NONE, init)

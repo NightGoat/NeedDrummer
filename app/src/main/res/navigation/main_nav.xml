@@ -17,8 +17,15 @@
             app:popUpTo="@id/startFragment"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/showMainFragment"
+            app:destination="@id/navigation_main"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
     <include app:graph="@navigation/navigation_auth" />
+    <include app:graph="@navigation/navigation_main"/>
 
 </navigation>

@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class AuthPreference @Inject constructor(context: Context): IAuthPreference, KotprefModel(context = context){
 
-    override fun isNotAuthenticated(): Boolean {
-        return email.isEmpty()
+    override fun isAuthenticated(): Boolean {
+        return email.isNotEmpty()
     }
 
     override var email: String by stringPref()
@@ -16,7 +16,7 @@ class AuthPreference @Inject constructor(context: Context): IAuthPreference, Kot
 }
 
 interface IAuthPreference {
-    fun isNotAuthenticated(): Boolean
+    fun isAuthenticated(): Boolean
 
     var email: String
     var password: String

@@ -90,10 +90,10 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
     open fun handleSuccess(result: SResult.Success<Any>) = Unit
 
     private fun observeFailure() {
-        onAnyChange(vm.errorLiveData, ::showFailureHandler)
+        onAnyChange(vm.errorLiveData, ::handleError)
     }
 
-    private fun showFailureHandler(error: SResult.ErrorResult) {
+    open fun handleError(error: SResult.ErrorResult) {
         showShortToast(error.message.orEmpty())
     }
 

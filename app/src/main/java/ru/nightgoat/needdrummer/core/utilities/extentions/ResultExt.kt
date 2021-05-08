@@ -5,6 +5,8 @@ import ru.nightgoat.needdrummer.core.platform.models.IConvertable
 import ru.nightgoat.needdrummer.core.platform.models.SResult
 import ru.nightgoat.needdrummer.core.platform.models.convert
 import ru.nightgoat.needdrummer.core.utilities.*
+import ru.nightgoat.needdrummer.core.utilities.extentions.takeIfNotEmpty
+import ru.nightgoat.needdrummer.models.states.ErrorType
 
 // /------ ViewResult extensions
 inline fun <reified T : Any> Any.successResult(data: T): SResult<T> = SResult.Success(data)
@@ -41,7 +43,7 @@ fun Any.errorResult(
 ) = SResult.ErrorResult.Error(message, code, exception)
 
 fun Any.alertResult(
-    message: String? = null,
+    message: String = "",
     dialogTitle: Any? = null,
     exception: Throwable? = null,
     okHandler: UnitHandler? = null,
@@ -106,9 +108,9 @@ inline fun <reified O : Any, reified I : IConvertable> SResult<I>.convertTo(): S
 }
 
 fun SResult.ErrorResult.getMessage(): Any? {
-    return (this.message?.takeIf { (it as? String)?.isNotEmpty() == true || (it as? Int) != null && it > 0 }
-       ?: this.exception?.message
-    ?: this.exception?.cause?.message)
+    return (this.message.takeIfNotEmpty()
+        ?: this.exception?.message
+        ?: this.exception?.cause?.message)
 }
 
 ///--- Inline Applying functions
@@ -165,6 +167,18 @@ inline fun <reified I : Any, reified O : Any> SResult<I>.mapIfSuccess(block: I.(
 @Suppress("UNCHECKED_CAST")
 inline fun <reified I : Any, reified O : Any> SResult<I>.flatMapIfSuccess(block: (I) -> SResult<O>): SResult<O> {
     return if (this is SResult.Success) block(this.data)
+    else this as SResult<O>
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <reified I : Any, reified O : Any> SResult<I>.flatMapIfError(block: () -> SResult<O>): SResult<O> {
+    return if (this is SResult.ErrorResult) block()
+    else this as SResult<O>
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <reified I : Any, reified O : Any> SResult<I>.flatMapIfSuccessToNavResult(block: (I) -> NavDirections): SResult<O> {
+    return if (this is SResult.Success) block(this.data).toNavigateResult() as SResult<O>
     else this as SResult<O>
 }
 
@@ -254,6 +268,8 @@ val <T : Any> SResult<T>.isError: Boolean
     get() = this is SResult.ErrorResult
 
 fun <T : Any> SResult<T>?.orError(
-    message: String? = null,
+    message: String = "",
     code: Int = 0,
-    exception: Throwable? = null): SResult<T> = this ?: SResult.ErrorResult.Error(message, code, exception)
+    exception: Throwable? = null,
+    type: ErrorType = ErrorType.ORDINARY
+): SResult<T> = this ?: SResult.ErrorResult.Error(message, code, exception, type)

@@ -4,7 +4,10 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
     id 'dagger.hilt.android.plugin'
+    id 'org.jlleitschuh.gradle.ktlint'
+    id 'androidx.navigation.safeargs.kotlin'
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -48,6 +51,7 @@ repositories {
     mavenCentral()
     jcenter()
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    maven { url 'https://plugins.gradle.org/m2/' }
 }
 
 dependencies {
@@ -101,4 +105,7 @@ dependencies {
     //navigation
     api deps.navigation.fragment_ktx
     api deps.navigation.ui_ktx
+    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

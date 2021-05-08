@@ -11,15 +11,20 @@
         android:label="loginFragment"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/showSelectMarketScreen"
+            android:id="@+id/showRegisterFragment"
             app:destination="@id/registerFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
         <action
-            android:id="@+id/action_loginFragment_to_forgotPassword"
+            android:id="@+id/showForgotPasswordFragment"
             app:destination="@id/forgotPassword" />
+        <action
+            android:id="@+id/showMainFragment"
+            app:destination="@id/navigation_main" />
+
     </fragment>
 
     <fragment
@@ -28,7 +33,7 @@
         android:label="registerFragment"
         tools:layout="@layout/fragment_register">
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
+            android:id="@+id/showLoginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 
@@ -38,10 +43,8 @@
         android:label="FmpSyncFragment"
         tools:layout="@layout/fragment_forgot_password">
         <action
-            android:id="@+id/showMainMenu"
-            app:destination="@id/navigation_main"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"/>
+            android:id="@+id/showLoginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <include app:graph="@navigation/navigation_main" />

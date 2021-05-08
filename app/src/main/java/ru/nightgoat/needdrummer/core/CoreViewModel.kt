@@ -3,8 +3,12 @@ package ru.nightgoat.needdrummer.core
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavDirections
+import pro.krit.core.common.extensions.toNavigateResult
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
 import ru.nightgoat.needdrummer.core.platform.models.SResult
+import ru.nightgoat.needdrummer.core.utilities.ErrorResult
+import ru.nightgoat.needdrummer.models.states.ErrorType
 
 abstract class CoreViewModel: ViewModel(), LifecycleObserver {
 
@@ -23,6 +27,19 @@ abstract class CoreViewModel: ViewModel(), LifecycleObserver {
         navigationLiveData.value = result
     }
 
+    fun goTo(direction: NavDirections) {
+        navigationLiveData.value = direction.toNavigateResult()
+    }
+
+    fun showLoading() {
+        loadingLiveData.postValue(SResult.Loading.Show)
+    }
+
+    fun hideLoading() {
+        loadingLiveData.postValue(SResult.Loading.Hide)
+    }
+
+    /** Handles SResult to a right LiveData, that observes in CoreFragment */
     fun handleResult(result: AnyResult) {
         when (result) {
             is SResult.NavigateResult -> navigationLiveData.postValue(result)
@@ -33,4 +50,22 @@ abstract class CoreViewModel: ViewModel(), LifecycleObserver {
             else -> Unit
         }
     }
+
+    /** Handles SResult while being in Loading State, after handling hides loading */
+    suspend fun doWhileLoading(doFun: suspend () -> AnyResult) {
+        showLoading()
+        doFun.invoke().handle()
+        hideLoading()
+    }
+
+    /** Passes SResult to method
+     * @see handleResult */
+    fun <T: SResult<R>, R: Any> T.handle() {
+        handleResult(this)
+    }
+
+    open fun getError(message: String, type: ErrorType = ErrorType.ORDINARY) = ErrorResult(
+        message = message,
+        type = type
+    )
 }

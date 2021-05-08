@@ -12,14 +12,14 @@ class StartViewModel : CoreViewModel(){
     @Inject
     lateinit var authPreference: IAuthPreference
 
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun getStartPageNavigation() {
-//        return if(userSettings.usePinCode && !authPreference.isNotAuthenticated()) {
-//            navigateToResult(NavigationMainDirections.showPinCodeFragment(StartViewModel::class.simpleName.orEmpty()))
-//        } else {
-//            navigateToResult(NavigationMainDirections.showAuthFragment())
-//        }
+        val direction = if(authPreference.isAuthenticated()) {
+            StartFragmentDirections.showMainFragment()
+        } else {
+            StartFragmentDirections.showAuthFragment()
+        }
+        goTo(direction)
     }
 
     companion object {
