@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import ru.nightgoat.needdrummer.BR
 import ru.nightgoat.needdrummer.R
+import ru.nightgoat.needdrummer.activity.MainActivity
 import ru.nightgoat.needdrummer.core.platform.models.SResult
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingAdapter
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingRecyclerViewConfig
@@ -292,7 +293,7 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
         super.onDestroy()
     }
 
-    private fun getCoreMainActivity(): CoreMainActivity? {
-        return activity?.implementationOf(CoreMainActivity::class.java)
+    private fun getCoreMainActivity(): MainActivity? {
+        return activity?.implementationOf(MainActivity::class.java)
     }
 }

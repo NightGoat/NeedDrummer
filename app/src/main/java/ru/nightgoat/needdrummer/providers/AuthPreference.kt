@@ -5,6 +5,7 @@ import com.chibatching.kotpref.KotprefModel
 import javax.inject.Inject
 
 class AuthPreference @Inject constructor(context: Context): IAuthPreference, KotprefModel(context = context){
+
     override fun isNotAuthenticated(): Boolean {
         return email.isEmpty()
     }

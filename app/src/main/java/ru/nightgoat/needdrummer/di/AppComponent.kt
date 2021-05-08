@@ -2,12 +2,11 @@ package ru.nightgoat.needdrummer.di
 
 import dagger.Component
 import ru.nightgoat.needdrummer.activity.MainActivity
-import ru.nightgoat.needdrummer.core.di.CoreComponent
 import ru.nightgoat.needdrummer.features.findBand.FindBandViewModel
 
-@Component(dependencies = [CoreComponent::class])
+@Component
 @AppScope
-interface AppComponent : CoreComponent {
+interface AppComponent  {
 
     fun inject(mainActivity: MainActivity)
 

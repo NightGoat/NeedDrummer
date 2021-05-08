@@ -9,7 +9,8 @@ import ru.nightgoat.needdrummer.core.utilities.*
 // /------ ViewResult extensions
 inline fun <reified T : Any> Any.successResult(data: T): SResult<T> = SResult.Success(data)
 
-fun Any?.loadingResult(isNeedHandle: Boolean = true) = SResult.Loading(isNeedHandle)
+fun Any?.showLoadingResul() = SResult.Loading.Show
+fun Any?.hideLoadingResult() = SResult.Loading.Hide
 fun Any?.emptyResult() = SResult.Empty
 
 fun Any.anySuccess() = SResult.AnySuccess
@@ -40,14 +41,14 @@ fun Any.errorResult(
 ) = SResult.ErrorResult.Error(message, code, exception)
 
 fun Any.alertResult(
-    message: Any? = null,
+    message: String? = null,
     dialogTitle: Any? = null,
     exception: Throwable? = null,
     okHandler: UnitHandler? = null,
     okTitle: Int? = null
 ) = SResult.ErrorResult.Alert(message, dialogTitle, exception, okHandler, okTitle)
 
-fun Any.toastResult(message: Any?) = SResult.Toast(message)
+fun Any.toastResult(message: String) = SResult.Toast(message)
 
 // /-------- toState Convertables
 inline fun <reified T : Any> T?.toSuccessResult(orDefault: SResult<T> = emptyResult()): SResult<T> =
@@ -253,6 +254,6 @@ val <T : Any> SResult<T>.isError: Boolean
     get() = this is SResult.ErrorResult
 
 fun <T : Any> SResult<T>?.orError(
-    message: Any? = null,
+    message: String? = null,
     code: Int = 0,
     exception: Throwable? = null): SResult<T> = this ?: SResult.ErrorResult.Error(message, code, exception)

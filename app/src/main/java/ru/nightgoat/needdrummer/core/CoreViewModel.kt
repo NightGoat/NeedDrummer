@@ -23,7 +23,7 @@ abstract class CoreViewModel: ViewModel(), LifecycleObserver {
         navigationLiveData.value = result
     }
 
-    suspend fun handleResult(result: AnyResult) {
+    fun handleResult(result: AnyResult) {
         when (result) {
             is SResult.NavigateResult -> navigationLiveData.postValue(result)
             is SResult.ErrorResult -> errorLiveData.postValue(result)

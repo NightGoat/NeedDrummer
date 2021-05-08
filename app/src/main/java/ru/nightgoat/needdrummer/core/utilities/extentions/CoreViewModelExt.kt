@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.nightgoat.needdrummer.core.CoreViewModel
-import ru.nightgoat.needdrummer.core.platform.models.Failure
+import ru.nightgoat.needdrummer.core.platform.models.SResult
 
 fun CoreViewModel.launchUITryCatch(
     start: CoroutineStart = CoroutineStart.DEFAULT,
@@ -18,7 +18,7 @@ fun CoreViewModel.launchUITryCatch(
     try {
         viewModelScope.launch(viewModelScope.coroutineContext, start, tryBlock)
     } catch (e: Throwable) {
-        catchBlock?.invoke(e) ?: handleFailure(failure = Failure.ThrowableFailure(e))
+        catchBlock?.invoke(e) ?: handleResult(SResult.ErrorResult.Error(exception = e))
     }
 }
 
@@ -26,7 +26,7 @@ fun CoreViewModel.launchAsyncTryCatch(catchBlock: ((Throwable) -> Unit)? = null,
     try {
         launchAsync(CoroutineStart.DEFAULT, tryBlock)
     } catch (e: Throwable) {
-        catchBlock?.invoke(e) ?: handleFailure(failure = Failure.ThrowableFailure(e))
+        catchBlock?.invoke(e) ?: handleResult(SResult.ErrorResult.Error(exception = e))
     }
 }
 
@@ -48,7 +48,7 @@ fun <T> CoreViewModel.asyncTryCatchLiveData(
     try {
         emit(tryBlock())
     } catch (e: Throwable) {
-        catchBlock?.invoke(e) ?: handleFailure(failure = Failure.ThrowableFailure(e))
+        catchBlock?.invoke(e) ?: handleResult(SResult.ErrorResult.Error(exception = e))
     }
 }
 
@@ -59,6 +59,6 @@ fun <T> CoreViewModel.asyncTryCatchMutableLiveData(
     try {
         emit(tryBlock())
     } catch (e: Throwable) {
-        catchBlock?.invoke(e) ?: handleFailure(failure = Failure.ThrowableFailure(e))
+        catchBlock?.invoke(e) ?: handleResult(SResult.ErrorResult.Error(exception = e))
     }
 } as MutableLiveData<T>

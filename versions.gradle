@@ -32,7 +32,7 @@ def versions = [
         gson                         : "2.8.6",
         firebase_crashlytics         : "17.2.2",
         firebase                     : "17.5.0",
-        room                         : "2.2.5",
+        room                         : "2.3.0",
         timber                       : "4.7.1",
         google_gms                   : "4.3.5",
         hilt                         : "1.0.0",
@@ -78,8 +78,7 @@ deps.arch_core = arch_core
 
 def hilt = [:]
 hilt.core = "com.google.dagger:hilt-android:$versions.hilt"
-hilt.compilier = "com.google.dagger:hilt-compiler:$versions.hilt"
-hilt.lifecycle_viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:$versions.hilt"
+hilt.compilier = "com.google.dagger:hilt-compiler:$versions.android_hilt"
 hilt.gradle = "com.google.dagger:hilt-android-gradle-plugin:$versions.android_hilt"
 hilt.android = "com.google.dagger:hilt-android:$versions.android_hilt"
 hilt.android_compilier = "com.google.dagger:hilt-android-compiler:$versions.android_hilt"
