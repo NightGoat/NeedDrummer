@@ -1,0 +1,10 @@
+static def commitsCount() {
+    //unix
+    def result = "git rev-list HEAD --count".execute().text.trim()
+    //windows
+    if (result.empty) result = "PowerShell -Command git rev-list HEAD --count".execute().text.trim()
+    if (result.empty) throw new RuntimeException("Could not generate versioncode on this platform? Cmd output: ${result.text}")
+    return result.toInteger()
+}
+
+ext.commitsCount = this.&commitsCount

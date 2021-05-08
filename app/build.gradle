@@ -2,21 +2,20 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
     id 'com.google.gms.google-services'
     id 'dagger.hilt.android.plugin'
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "ru.nightgoat.needdrummer"
         minSdkVersion 26
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 30
+        versionCode commitsCount()
+        versionName "$major_version.${commitsCount()}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -54,22 +53,14 @@ dependencies {
     api deps.kotlin.lifecycle_livedata_ktx
     api deps.common.kotpref
     api deps.common.kotpref_liveData
-    implementation deps.common.timber
+    api deps.common.timber
 
     // DI
     kapt deps.hilt.compilier
     api deps.hilt.core
-
-    //Hilt for di
-    def hilt_version = "2.28-alpha"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-
-    // Hilt ViewModel extension
-    def hilt_jetpack_version = "1.0.0-alpha01"
-    //noinspection GradleDependency
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_jetpack_version"
-    kapt "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
+    api deps.hilt.android
+    kapt deps.hilt.compilier
+    api deps.hilt.lifecycle_viewmodel
 
     // Support libraries
     api deps.support.app_compat
@@ -82,53 +73,38 @@ dependencies {
 
     api deps.constraint_layout
 
-
     // Firebase
-    api deps.firebase_analytics
-    // Crashlytics
-    api deps.crashlytics
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    api deps.firebase.analytics
+    api deps.firebase.crashlytics
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx:19.7.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
+    implementation 'com.google.firebase:firebase-firestore:22.1.2'
+    implementation 'com.google.firebase:firebase-auth'
 
-    //Room
-    //api deps.room.room_runtime
-    //kapt deps.room.room_compiler
-
-    api 'com.cronutils:cron-utils:4.1.3'
     api deps.gson
 
+    //Room
     api deps.room.room_runtime
     kapt deps.room.room_compiler
 
     testImplementation deps.junit
 
-    testImplementation 'org.mockito:mockito-core:2.23.0'
-    //testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
-    //testImplementation 'org.mockito:mockito-inline:2.13.0'
-    //testImplementation("io.mockk:mockk:1.9.3")
-
     // Mask for EditText
-    implementation 'com.redmadrobot:input-mask-android:6.0.0'
+    api deps.input_mask
 
     // Style attribute for recycler view
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    api deps.support.recyclerview
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-    implementation platform('com.google.firebase:firebase-bom:26.2.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-database-ktx:19.7.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
-    implementation 'com.google.firebase:firebase-firestore:22.1.2'
-    implementation 'com.google.firebase:firebase-auth:20.0.4'
+    api deps.kotlin.stdlib
+    api deps.kotlin.core_ktx
+    api deps.support.app_compat
+    api deps.support.design
+    api deps.constraint_layout
 
     //navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.4'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'
+    api deps.navigation.fragment_ktx
+    api deps.navigation.ui_ktx
 
 }
