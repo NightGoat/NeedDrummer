@@ -1,4 +1,4 @@
-package ru.nightgoat.needdrummer.features.account
+package ru.nightgoat.needdrummer.features.account.core
 
 import androidx.lifecycle.MutableLiveData
 import ru.nightgoat.needdrummer.core.CoreViewModel
@@ -7,7 +7,7 @@ import ru.nightgoat.needdrummer.core.utilities.ErrorResult
 import ru.nightgoat.needdrummer.models.states.ErrorType
 import ru.nightgoat.needdrummer.repos.Interfaces.IResourcesRepo
 
-abstract class AuthViewModel: CoreViewModel() {
+abstract class CoreAuthViewModel: CoreViewModel() {
 
     val email = MutableLiveData("")
     val password = MutableLiveData("")
@@ -35,8 +35,10 @@ abstract class AuthViewModel: CoreViewModel() {
         } ?: getAuthError()
     }
 
-    private fun getAuthError(
+    fun getAuthError(
         message: String = errorMessage,
         type: ErrorType = ErrorType.ORDINARY
     ): ErrorResult = getError(message, type)
+
+    abstract fun onRegisterBtnClicked()
 }

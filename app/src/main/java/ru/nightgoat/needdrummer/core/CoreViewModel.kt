@@ -8,6 +8,7 @@ import pro.krit.core.common.extensions.toNavigateResult
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
 import ru.nightgoat.needdrummer.core.platform.models.SResult
 import ru.nightgoat.needdrummer.core.utilities.ErrorResult
+import ru.nightgoat.needdrummer.core.utilities.extentions.launchUITryCatch
 import ru.nightgoat.needdrummer.models.states.ErrorType
 
 abstract class CoreViewModel: ViewModel(), LifecycleObserver {
@@ -53,6 +54,16 @@ abstract class CoreViewModel: ViewModel(), LifecycleObserver {
 
     /** Handles SResult while being in Loading State, after handling hides loading */
     suspend fun doWhileLoading(doFun: suspend () -> AnyResult) {
+        showLoading()
+        doFun.invoke().handle()
+        hideLoading()
+    }
+
+    /** Starts new Coroutine from viewModelScope,
+     * then handles SResult while being in Loading State,
+     * after handling hides loading.
+     * Danger! Do not start new coroutine inside this coroutine!*/
+    fun doWhileLoadingInNewCoroutine(doFun: suspend () -> AnyResult) = launchUITryCatch {
         showLoading()
         doFun.invoke().handle()
         hideLoading()

@@ -94,7 +94,7 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
     }
 
     open fun handleError(error: SResult.ErrorResult) {
-        showShortToast(error.message.orEmpty())
+        showShortToast(error.message)
     }
 
     private fun observeNavigation() {

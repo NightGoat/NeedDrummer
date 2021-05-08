@@ -10,10 +10,10 @@ import javax.inject.Inject
 class ResourcesRepo @Inject constructor(
     private val context: Context
 ) : IResourcesRepo {
-    override val authError by lazy { context.getString(R.string.auth_error) }
-    override val registerError: String by lazyString(R.string.register_error)
-    override val rememberPassError: String by lazyString(R.string.remember_pass_error)
-    override val wrongEmailOrPass by lazy { context.getString(R.string.wrong_email_or_pass) }
+    override val authError by lazyString(R.string.auth_error)
+    override val registerError by lazyString(R.string.register_error)
+    override val rememberPassError by lazyString(R.string.remember_pass_error)
+    override val wrongEmailOrPass by lazyString(R.string.wrong_email_or_pass )
 
     private fun lazyString(@StringRes stringId: Int) = unsafeLazy {
         context.getString(stringId)

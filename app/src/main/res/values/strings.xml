@@ -26,6 +26,7 @@
     <string name="register_error">Ошибка регистрации</string>
     <string name="remember_pass_error">Ошибка восстановления пароля</string>
     <string name="wrong_email_or_pass">Введены неверные email и/или пароль</string>
+    <string name="enter_name">Введите пожалуйста имя</string>
     <string name="enter_email">Введите пожалуйста email</string>
     <string name="enter_pass">Введите пожалуйста пароль</string>
 </resources>
