@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="ru.nightgoat.needdrummer.models.Musician" />
+            type="ru.nightgoat.needdrummer.models.domain.Musician" />
     </data>
 
     <androidx.cardview.widget.CardView

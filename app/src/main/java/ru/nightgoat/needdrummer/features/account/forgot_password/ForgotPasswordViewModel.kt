@@ -1,34 +1,23 @@
 package ru.nightgoat.needdrummer.features.account.forgot_password
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import pro.krit.core.common.extensions.flatMapIfSuccess
-import pro.krit.core.common.extensions.toNavigateResult
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
-import ru.nightgoat.needdrummer.core.utilities.extentions.unsafeLazy
+import ru.nightgoat.needdrummer.domain.auth.IForgotPasswordUseCase
 import ru.nightgoat.needdrummer.features.account.core.CoreAuthViewModel
-import ru.nightgoat.needdrummer.repos.Interfaces.IFirebaseRepo
-import ru.nightgoat.needdrummer.repos.Interfaces.IResourcesRepo
+import ru.nightgoat.needdrummer.models.util.toEmail
 import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
-    private val firebaseRepo: IFirebaseRepo,
-    override val stringResources: IResourcesRepo
+    private val forgotPasswordUseCase: IForgotPasswordUseCase
 ) : CoreAuthViewModel() {
 
-    override val errorMessage: String by unsafeLazy {
-        stringResources.rememberPassError
-    }
-
     private suspend fun resetPassword(): AnyResult {
-        return checkEmail().flatMapIfSuccess { enteredEmail ->
-            firebaseRepo.resetPassword(enteredEmail).flatMapIfSuccess {
-                ForgotPasswordFragmentDirections.showLoginFragment().toNavigateResult()
-            }
-        }
+        val email = email.value?.toEmail()
+        return forgotPasswordUseCase.invoke(email)
     }
 
-    override fun onRegisterBtnClicked() {
+    fun onRememberPasswordButtonClicked() {
         doWhileLoadingInNewCoroutine {
             resetPassword()
         }

@@ -1,4 +1,4 @@
-package ru.nightgoat.needdrummer.models
+package ru.nightgoat.needdrummer.models.domain
 
 data class Band(
     val name: String,

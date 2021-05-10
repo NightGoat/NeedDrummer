@@ -3,7 +3,7 @@ package ru.nightgoat.needdrummer.core.utilities.databinding
 import androidx.databinding.BindingAdapter
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import ru.nightgoat.needdrummer.models.Instrument
+import ru.nightgoat.needdrummer.models.domain.Instrument
 
 @BindingAdapter(value = ["chipItems"])
 fun setChips(chipGroup: ChipGroup, items: Set<String>) {

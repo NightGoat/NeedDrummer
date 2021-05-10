@@ -3,7 +3,7 @@ package ru.nightgoat.needdrummer.features.start
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import ru.nightgoat.needdrummer.core.CoreViewModel
-import ru.nightgoat.needdrummer.providers.IAuthPreference
+import ru.nightgoat.needdrummer.data.sources.local.IAuthPreference
 import javax.inject.Inject
 
 

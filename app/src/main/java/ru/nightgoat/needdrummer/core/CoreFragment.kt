@@ -1,11 +1,9 @@
 package ru.nightgoat.needdrummer.core
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -271,19 +269,8 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
         }
     }
 
-    protected fun testOnScanResult(vmOnScanResult: (code: String) -> Unit) {
-        val editText = EditText(context)
-        val dialog = AlertDialog.Builder(context)
-            .setTitle("onScanResult:")
-            .setView(editText)
-            .setPositiveButton("scan") { _, _ -> vmOnScanResult(editText.text.toString()) }
-            .setNegativeButton("cancel") { _, _ -> }
-        dialog.show()
-    }
-
     @LayoutRes
     abstract fun getLayoutId(): Int
-
 
     override fun onDestroy() {
         binding?.unbind()

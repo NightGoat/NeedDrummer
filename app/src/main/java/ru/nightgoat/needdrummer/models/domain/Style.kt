@@ -1,4 +1,4 @@
-package ru.nightgoat.needdrummer.models
+package ru.nightgoat.needdrummer.models.domain
 
 enum class Style {
     ROCK,

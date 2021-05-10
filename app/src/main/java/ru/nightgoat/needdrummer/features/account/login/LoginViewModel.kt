@@ -1,24 +1,20 @@
 package ru.nightgoat.needdrummer.features.account.login
 
+import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import pro.krit.core.common.extensions.flatMapIfSuccess
-import pro.krit.core.common.extensions.toNavigateResult
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
-import ru.nightgoat.needdrummer.core.utilities.extentions.unsafeLazy
+import ru.nightgoat.needdrummer.domain.auth.ILoginUseCase
 import ru.nightgoat.needdrummer.features.account.core.CoreAuthViewModel
-import ru.nightgoat.needdrummer.repos.Interfaces.IFirebaseRepo
-import ru.nightgoat.needdrummer.repos.Interfaces.IResourcesRepo
+import ru.nightgoat.needdrummer.models.util.toEmail
+import ru.nightgoat.needdrummer.models.util.toPassword
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val firebaseRepo: IFirebaseRepo,
-    override val stringResources: IResourcesRepo
+    private val loginUseCase: ILoginUseCase
 ) : CoreAuthViewModel() {
 
-    override val errorMessage: String by unsafeLazy {
-        stringResources.authError
-    }
+    val password = MutableLiveData("")
 
     fun onLoginBtnClicked() {
         doWhileLoadingInNewCoroutine {
@@ -27,17 +23,13 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun getLogin(): AnyResult {
-        return checkEmail().flatMapIfSuccess { enteredEmail ->
-            checkPassword().flatMapIfSuccess { enteredPassword ->
-                firebaseRepo.login(enteredEmail, enteredPassword)
-                    .flatMapIfSuccess {
-                        LoginFragmentDirections.showMainFragment().toNavigateResult()
-                    }
-            }
-        }
+        val email = email.value?.toEmail()
+        val password = password.value?.toPassword()
+        val param = Pair(email, password)
+        return loginUseCase.invoke(param)
     }
 
-    override fun onRegisterBtnClicked() {
+    fun onRegisterBtnClicked() {
         goTo(direction = LoginFragmentDirections.showRegisterFragment())
     }
 

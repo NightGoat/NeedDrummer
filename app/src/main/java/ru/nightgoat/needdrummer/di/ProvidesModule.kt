@@ -6,12 +6,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.nightgoat.needdrummer.providers.AuthPreference
-import ru.nightgoat.needdrummer.providers.IAuthPreference
-import ru.nightgoat.needdrummer.repos.FireBaseRepo
-import ru.nightgoat.needdrummer.repos.Interfaces.IFirebaseRepo
-import ru.nightgoat.needdrummer.repos.Interfaces.IResourcesRepo
-import ru.nightgoat.needdrummer.repos.ResourcesRepo
+import ru.nightgoat.needdrummer.data.base.IFirebaseRepo
+import ru.nightgoat.needdrummer.data.base.IStringResources
+import ru.nightgoat.needdrummer.data.sources.local.AuthPreference
+import ru.nightgoat.needdrummer.data.sources.local.IAuthPreference
+import ru.nightgoat.needdrummer.data.sources.remote.FireBaseRepo
+import ru.nightgoat.needdrummer.providers.StringResources
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,12 +23,12 @@ class ProvidesModule {
     }
 
     @Provides
-    fun provideResourcesRepo(@ApplicationContext applicationContext: Context): IResourcesRepo {
-        return ResourcesRepo(applicationContext)
+    fun provideResourcesRepo(@ApplicationContext applicationContext: Context): IStringResources {
+        return StringResources(applicationContext)
     }
 
     @Provides
-    fun provideFirebase(stringResources: IResourcesRepo): IFirebaseRepo {
+    fun provideFirebase(stringResources: IStringResources): IFirebaseRepo {
         return FireBaseRepo(stringResources)
     }
 }
