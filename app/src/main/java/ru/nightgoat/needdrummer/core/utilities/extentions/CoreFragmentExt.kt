@@ -2,8 +2,13 @@ package ru.nightgoat.needdrummer.core.utilities.extentions
 
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import ru.nightgoat.needdrummer.R
 import ru.nightgoat.needdrummer.core.CoreFragment
 import ru.nightgoat.needdrummer.core.CoreViewModel
@@ -45,4 +50,12 @@ fun <T : Any> CoreFragment<*, *>.onAnyChange(data: LiveData<T>?, stateHandle: (T
     data?.observe(viewLifecycleOwner, {
         stateHandle(it)
     })
+}
+
+fun <T : Any> CoreFragment<*, *>.onAnyChange(data: Flow<T>, stateHandle: (T) -> Unit) {
+    lifecycleScope.launch {
+        data.buffer(1).collect {
+            stateHandle(it)
+        }
+    }
 }

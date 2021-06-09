@@ -6,11 +6,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.nightgoat.needdrummer.data.base.IFirebaseRepo
-import ru.nightgoat.needdrummer.data.base.IStringResources
 import ru.nightgoat.needdrummer.data.sources.local.AuthPreference
 import ru.nightgoat.needdrummer.data.sources.local.IAuthPreference
 import ru.nightgoat.needdrummer.data.sources.remote.FireBaseRepo
+import ru.nightgoat.needdrummer.data.sources.remote.IFirebaseRepo
+import ru.nightgoat.needdrummer.providers.IStringResources
 import ru.nightgoat.needdrummer.providers.StringResources
 
 @Module

@@ -9,13 +9,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import kotlinx.coroutines.flow.collect
 import ru.nightgoat.needdrummer.BR
 import ru.nightgoat.needdrummer.R
 import ru.nightgoat.needdrummer.activity.MainActivity
+import ru.nightgoat.needdrummer.core.platform.models.IResult
 import ru.nightgoat.needdrummer.core.platform.models.SResult
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingAdapter
 import ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingRecyclerViewConfig
@@ -55,26 +58,13 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
     private val errorViewLayout: View?
         get() = contentView?.findViewById(R.id.errorLayout)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        lifecycle.addObserver(vm)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        observeFailure()
-        observeNavigation()
-        observeLoading()
-        observeToast()
         observeResult()
-    }
-
-    private fun observeToast() {
-        onAnyChange(vm.toastLiveData, ::handleToast)
     }
 
     private fun handleToast(result: SResult.Toast) {
@@ -82,27 +72,41 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
     }
 
     private fun observeResult() {
-        onAnyChange(vm.resultLiveData, ::handleSuccess)
+        lifecycleScope.launchWhenStarted {
+            vm.resultFlow.collect {
+                if (!it.isHandled) {
+                    handleResult(it)
+                }
+            }
+        }
     }
 
-    open fun handleSuccess(result: SResult.Success<Any>) = Unit
+    open fun handleSuccess(result: IResult<Any>) = Unit
 
-    private fun observeFailure() {
-        onAnyChange(vm.errorLiveData, ::handleError)
+    private fun handleResult(result: IResult<Any>) {
+        if (result.isHandled) return
+        result.handle()
+
+        when (result) {
+            is SResult.Loading -> showLayoutLoading()
+            is SResult.NavigateResult -> handleNavigation(result)
+            is SResult.Toast -> handleToast(result)
+            is SResult.ErrorResult -> handleError(result)
+            is SResult.Success -> {
+                hideLayoutLoading()
+                handleSuccess(result)
+            }
+        }
     }
 
     open fun handleError(error: SResult.ErrorResult) {
         showShortToast(error.message)
     }
 
-    private fun observeNavigation() {
-        onAnyChange(vm.navigationLiveData, ::handleNavigation)
-    }
-
     private fun handleNavigation(result: SResult.NavigateResult) {
+        hideLayoutLoading()
         when (result) {
             is SResult.NavigateResult.NavigateTo -> {
-                //hideLoading()
                 val direction = result.direction
                 navigateTo(direction)
             }
@@ -114,17 +118,7 @@ abstract class CoreFragment<T : ViewDataBinding, S : CoreViewModel> : Fragment()
 
             SResult.NavigateResult.NavigateBack -> onBackPressed()
             SResult.NavigateResult.NavigateNext -> onNextPressed()
-        }
-    }
-
-    private fun observeLoading() {
-        onAnyChange(vm.loadingLiveData, ::showLoading)
-    }
-
-    private fun showLoading(loadingState: SResult.Loading) {
-        when (loadingState) {
-            is SResult.Loading.Show -> showLayoutLoading()
-            is SResult.Loading.Hide -> hideLayoutLoading()
+            SResult.NavigateResult.Stay -> Unit
         }
     }
 

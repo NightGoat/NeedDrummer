@@ -4,5 +4,6 @@ enum class ErrorType {
     ORDINARY,
     EMPTY_NAME,
     EMPTY_EMAIL,
-    EMPTY_PASSWORD
+    EMPTY_PASSWORD,
+    BAD_EMAIL
 }

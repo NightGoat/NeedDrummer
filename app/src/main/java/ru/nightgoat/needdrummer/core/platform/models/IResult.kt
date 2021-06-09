@@ -15,4 +15,6 @@ interface IResult<out T : Any> {
      * This flag told does it already handled
      */
     var isHandled: Boolean
+
+    fun handle()
 }

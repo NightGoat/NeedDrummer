@@ -3,6 +3,7 @@ package ru.nightgoat.needdrummer.features.account.register
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
+import ru.nightgoat.needdrummer.core.utilities.extentions.launchAndHandle
 import ru.nightgoat.needdrummer.domain.auth.IRegisterUseCase
 import ru.nightgoat.needdrummer.features.account.core.CoreAuthViewModel
 import ru.nightgoat.needdrummer.models.util.toEmail
@@ -27,7 +28,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun onRegisterBtnClicked() {
-        doWhileLoadingInNewCoroutine {
+        launchAndHandle {
             register()
         }
     }

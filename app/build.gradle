@@ -49,7 +49,7 @@ android {
 repositories {
     google()
     mavenCentral()
-    jcenter()
+    maven { url 'https://jitpack.io' }
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     maven { url 'https://plugins.gradle.org/m2/' }
 }
@@ -83,12 +83,10 @@ dependencies {
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
-    api deps.firebase.analytics
-    api deps.firebase.crashlytics
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-database-ktx:19.7.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
-    implementation 'com.google.firebase:firebase-firestore:22.1.2'
+    implementation 'com.google.firebase:firebase-firestore:23.0.1'
     implementation 'com.google.firebase:firebase-auth'
 
     api deps.gson
@@ -102,10 +100,9 @@ dependencies {
     // Mask for EditText
     api deps.input_mask
 
+    api deps.kextentions
+
     //navigation
     api deps.navigation.fragment_ktx
     api deps.navigation.ui_ktx
-    implementation "androidx.core:core-ktx:+"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

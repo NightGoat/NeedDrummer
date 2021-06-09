@@ -1,25 +1,22 @@
 package ru.nightgoat.needdrummer.features.start
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.liveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import ru.nightgoat.needdrummer.core.CoreViewModel
 import ru.nightgoat.needdrummer.data.sources.local.IAuthPreference
 import javax.inject.Inject
 
+@HiltViewModel
+class StartViewModel @Inject constructor(
+    private val authPreference: IAuthPreference
+) : CoreViewModel() {
 
-class StartViewModel : CoreViewModel(){
-
-    @Inject
-    lateinit var authPreference: IAuthPreference
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    private fun getStartPageNavigation() {
-        val direction = if(authPreference.isAuthenticated()) {
-            StartFragmentDirections.showMainFragment()
-        } else {
-            StartFragmentDirections.showAuthFragment()
+    val isAuthenticated by lazy {
+        liveData {
+            delay(START_TIMEOUT_MS)
+            emit(authPreference.isAuthenticated())
         }
-        goTo(direction)
     }
 
     companion object {

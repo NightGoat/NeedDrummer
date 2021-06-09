@@ -11,17 +11,17 @@ sealed class SResult<out T : Any> : IResult<T> {
     override var isNeedHandle: Boolean = false
     override var isHandled: Boolean = false
 
+    override fun handle() {
+        isHandled = true
+    }
+
     open class Success<out T : Any>(
         override val data: T
     ) : SResult<T>()
 
     object AnySuccess : Success<Any>(true)
 
-    sealed class Loading : SResult<Nothing>() {
-        override var isNeedHandle: Boolean = true
-        object Show: Loading()
-        object Hide: Loading()
-    }
+    object Loading : SResult<Nothing>()
 
     data class Toast(val message: String) : SResult<Any>() {
         override var isNeedHandle: Boolean = true
@@ -45,6 +45,7 @@ sealed class SResult<out T : Any> : IResult<T> {
 
         object NavigateNext : NavigateResult()
         object NavigateBack : NavigateResult()
+        object Stay: NavigateResult()
     }
 
     //---- Error States

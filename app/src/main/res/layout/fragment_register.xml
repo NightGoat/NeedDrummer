@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
                 android:inputType="textEmailAddress"
-                android:text="@{vm.name}" />
+                android:text="@={vm.name}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:text="@{vm.email}" />
+                android:text="@={vm.email}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:text="@{vm.password}" />
+                android:text="@={vm.password}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

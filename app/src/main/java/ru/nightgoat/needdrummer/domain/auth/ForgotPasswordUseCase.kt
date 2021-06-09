@@ -1,7 +1,7 @@
 package ru.nightgoat.needdrummer.domain.auth
 
-import pro.krit.core.common.extensions.flatMapIfSuccess
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
+import ru.nightgoat.needdrummer.core.utilities.extentions.flatMapIfSuccess
 import ru.nightgoat.needdrummer.data.repos.IAuthRepo
 import ru.nightgoat.needdrummer.domain.IUseCase
 import ru.nightgoat.needdrummer.models.util.Email

@@ -1,7 +1,7 @@
 package ru.nightgoat.needdrummer.data.repos
 
-import pro.krit.core.common.extensions.flatMapIfSuccess
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
+import ru.nightgoat.needdrummer.core.utilities.extentions.flatMapIfSuccess
 import ru.nightgoat.needdrummer.data.base.IBaseRepo
 import ru.nightgoat.needdrummer.data.sources.local.IAuthPreference
 import ru.nightgoat.needdrummer.data.sources.remote.IFirebaseRepo

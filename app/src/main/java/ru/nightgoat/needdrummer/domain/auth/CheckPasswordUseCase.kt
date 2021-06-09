@@ -1,8 +1,8 @@
 package ru.nightgoat.needdrummer.domain.auth
 
-import pro.krit.core.common.extensions.orError
 import ru.nightgoat.needdrummer.core.platform.models.SResult
 import ru.nightgoat.needdrummer.core.utilities.ErrorResult
+import ru.nightgoat.needdrummer.core.utilities.extentions.orError
 import ru.nightgoat.needdrummer.domain.IUseCase
 import ru.nightgoat.needdrummer.models.states.ErrorType
 import ru.nightgoat.needdrummer.models.util.Password

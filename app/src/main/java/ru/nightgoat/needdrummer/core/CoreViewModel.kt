@@ -1,77 +1,52 @@
 package ru.nightgoat.needdrummer.core
 
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
-import pro.krit.core.common.extensions.toNavigateResult
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
+import ru.nightgoat.needdrummer.core.platform.models.IResult
 import ru.nightgoat.needdrummer.core.platform.models.SResult
 import ru.nightgoat.needdrummer.core.utilities.ErrorResult
-import ru.nightgoat.needdrummer.core.utilities.extentions.launchUITryCatch
+import ru.nightgoat.needdrummer.core.utilities.extentions.toNavigateResult
 import ru.nightgoat.needdrummer.models.states.ErrorType
 
-abstract class CoreViewModel: ViewModel(), LifecycleObserver {
+abstract class CoreViewModel: ViewModel() {
 
     val selectedPage = MutableLiveData(0)
-    val navigationLiveData = MutableLiveData<SResult.NavigateResult>()
-    val resultLiveData = MutableLiveData<SResult.Success<Any>>()
-    val errorLiveData = MutableLiveData<SResult.ErrorResult>()
-    val loadingLiveData = MutableLiveData<SResult.Loading>()
-    val toastLiveData = MutableLiveData<SResult.Toast>()
+    private val _resultFlow: MutableStateFlow<IResult<Any>> = MutableStateFlow(SResult.Empty)
+    val resultFlow: StateFlow<IResult<Any>>
+        get() = _resultFlow
 
     fun goBack() {
-        navigationLiveData.value = SResult.NavigateResult.NavigateBack
+        _resultFlow.value = SResult.NavigateResult.NavigateBack
     }
 
     fun goTo(result: SResult.NavigateResult) {
-        navigationLiveData.value = result
+        _resultFlow.value = result
     }
 
     fun goTo(direction: NavDirections) {
-        navigationLiveData.value = direction.toNavigateResult()
+        _resultFlow.value = direction.toNavigateResult()
     }
 
     fun showLoading() {
-        loadingLiveData.postValue(SResult.Loading.Show)
+        _resultFlow.value = SResult.Loading
     }
 
     fun hideLoading() {
-        loadingLiveData.postValue(SResult.Loading.Hide)
+        _resultFlow.value = SResult.Empty
     }
 
     /** Handles SResult to a right LiveData, that observes in CoreFragment */
     fun handleResult(result: AnyResult) {
-        when (result) {
-            is SResult.NavigateResult -> navigationLiveData.postValue(result)
-            is SResult.ErrorResult -> errorLiveData.postValue(result)
-            is SResult.Success -> resultLiveData.postValue(result)
-            is SResult.Loading -> loadingLiveData.postValue(result)
-            is SResult.Toast -> toastLiveData.postValue(result)
-            else -> Unit
-        }
-    }
-
-    /** Handles SResult while being in Loading State, after handling hides loading */
-    suspend fun doWhileLoading(doFun: suspend () -> AnyResult) {
-        showLoading()
-        doFun.invoke().handle()
-        hideLoading()
-    }
-
-    /** Starts new Coroutine from viewModelScope,
-     * then handles SResult while being in Loading State,
-     * after handling hides loading.
-     * Danger! Do not start new coroutine inside this coroutine!*/
-    fun doWhileLoadingInNewCoroutine(doFun: suspend () -> AnyResult) = launchUITryCatch {
-        showLoading()
-        doFun.invoke().handle()
-        hideLoading()
+        _resultFlow.value = result
     }
 
     /** Passes SResult to method
      * @see handleResult */
-    fun <T: SResult<R>, R: Any> T.handle() {
+    fun <T: SResult<R>, R: Any> T.handleAsResult() {
         handleResult(this)
     }
 

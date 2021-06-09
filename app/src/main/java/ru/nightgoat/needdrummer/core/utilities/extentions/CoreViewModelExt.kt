@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.nightgoat.needdrummer.core.CoreViewModel
+import ru.nightgoat.needdrummer.core.platform.models.AnyResult
 import ru.nightgoat.needdrummer.core.platform.models.SResult
 
 fun CoreViewModel.launchUITryCatch(
@@ -17,6 +18,19 @@ fun CoreViewModel.launchUITryCatch(
 ) {
     try {
         viewModelScope.launch(viewModelScope.coroutineContext, start, tryBlock)
+    } catch (e: Throwable) {
+        catchBlock?.invoke(e) ?: handleResult(SResult.ErrorResult.Error(exception = e))
+    }
+}
+
+fun CoreViewModel.launchAndHandle(
+    start: CoroutineStart = CoroutineStart.DEFAULT,
+    catchBlock: ((Throwable) -> Unit)? = null, tryBlock: suspend CoroutineScope.() -> AnyResult
+) {
+    try {
+        viewModelScope.launch(viewModelScope.coroutineContext, start) {
+            tryBlock().handleAsResult()
+        }
     } catch (e: Throwable) {
         catchBlock?.invoke(e) ?: handleResult(SResult.ErrorResult.Error(exception = e))
     }

@@ -10,15 +10,21 @@ import ru.nightgoat.needdrummer.models.states.ErrorType
 
 abstract class CoreAuthFragment<T : ViewDataBinding, S : CoreViewModel> : CoreFragment<T, S>() {
 
-    private val emailView: TextInputLayout? = view?.findViewById(R.id.email_il)
-    private val passwordView: TextInputLayout? = view?.findViewById(R.id.password_il)
-    private val nameView: TextInputLayout? = view?.findViewById(R.id.name_il)
+    private val emailView: TextInputLayout?
+        get() = view?.findViewById(R.id.email_il)
+
+    private val passwordView: TextInputLayout?
+        get() = view?.findViewById(R.id.password_il)
+
+    private val nameView: TextInputLayout?
+        get() = view?.findViewById(R.id.name_il)
 
     override fun handleError(error: SResult.ErrorResult) {
         when (error.type) {
             ErrorType.EMPTY_NAME -> setNameError()
-            ErrorType.EMPTY_EMAIL -> setEmailError()
+            ErrorType.EMPTY_EMAIL -> setEmptyEmailError()
             ErrorType.EMPTY_PASSWORD -> setPasswordEmail()
+            ErrorType.BAD_EMAIL -> setWrongEmailError()
             else -> super.handleError(error)
         }
     }
@@ -27,8 +33,12 @@ abstract class CoreAuthFragment<T : ViewDataBinding, S : CoreViewModel> : CoreFr
         nameView?.error = getString(R.string.enter_name)
     }
 
-    private fun setEmailError() {
+    private fun setEmptyEmailError() {
         emailView?.error = getString(R.string.enter_email)
+    }
+
+    private fun setWrongEmailError() {
+        emailView?.error = getString(R.string.wrong_email)
     }
 
     private fun setPasswordEmail() {

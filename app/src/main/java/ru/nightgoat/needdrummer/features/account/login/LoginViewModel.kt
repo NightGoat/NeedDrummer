@@ -3,6 +3,7 @@ package ru.nightgoat.needdrummer.features.account.login
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.nightgoat.needdrummer.core.platform.models.AnyResult
+import ru.nightgoat.needdrummer.core.utilities.extentions.launchAndHandle
 import ru.nightgoat.needdrummer.domain.auth.ILoginUseCase
 import ru.nightgoat.needdrummer.features.account.core.CoreAuthViewModel
 import ru.nightgoat.needdrummer.models.util.toEmail
@@ -17,7 +18,7 @@ class LoginViewModel @Inject constructor(
     val password = MutableLiveData("")
 
     fun onLoginBtnClicked() {
-        doWhileLoadingInNewCoroutine {
+        launchAndHandle {
             getLogin()
         }
     }

@@ -6,9 +6,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import pro.krit.core.common.extensions.orError
-import pro.krit.core.common.extensions.toSuccessResult
 import ru.nightgoat.needdrummer.core.platform.models.SResult
+import ru.nightgoat.needdrummer.core.utilities.extentions.orError
+import ru.nightgoat.needdrummer.core.utilities.extentions.toSuccessResult
 import ru.nightgoat.needdrummer.data.base.IRemoteSource
 import ru.nightgoat.needdrummer.models.repo.UserModel
 import ru.nightgoat.needdrummer.models.util.Email
