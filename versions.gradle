@@ -40,7 +40,7 @@ def versions = [
         navigation                   : "2.3.5",
         input_mask                   : "6.0.0",
         ktlint                       : "10.0.0",
-        kex                          : "0.0.4"
+        kex                          : "0.0.5"
 ]
 
 def deps = [:]
@@ -134,6 +134,6 @@ deps.google_gms = "com.google.gms:google-services:$versions.google_gms"
 deps.input_mask = "com.redmadrobot:input-mask-android:$versions.input_mask"
 deps.ktlint_gradle = "org.jlleitschuh.gradle:ktlint-gradle:$versions.ktlint"
 
-deps.kextentions = "com.github.nightgoat:kextentions:$versions.kex"
+deps.kextentions = "com.github.nightgoat:kextensions:$versions.kex"
 ext.deps = deps
 

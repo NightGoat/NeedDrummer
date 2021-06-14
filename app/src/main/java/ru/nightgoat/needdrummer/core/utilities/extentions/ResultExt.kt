@@ -1,12 +1,12 @@
 package ru.nightgoat.needdrummer.core.utilities.extentions
 
 import androidx.navigation.NavDirections
+import ru.nightgoat.kextensions.takeIfNotEmpty
 import ru.nightgoat.needdrummer.core.platform.models.IConvertable
 import ru.nightgoat.needdrummer.core.platform.models.SResult
 import ru.nightgoat.needdrummer.core.platform.models.convert
 import ru.nightgoat.needdrummer.core.utilities.*
 import ru.nightgoat.needdrummer.models.states.ErrorType
-import takeIfNotEmpty
 
 // /------ ViewResult extensions
 inline fun <reified T : Any> Any.successResult(data: T): SResult<T> = SResult.Success(data)
