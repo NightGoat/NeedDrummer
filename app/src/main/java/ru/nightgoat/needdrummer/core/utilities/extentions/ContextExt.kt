@@ -11,7 +11,7 @@ import android.os.Build
 import android.provider.Settings
 import android.text.format.Formatter
 import android.util.TypedValue
-import com.lenta.shared.utilities.Logg
+import ru.nightgoat.needdrummer.core.utilities.loggE
 import kotlin.system.exitProcess
 
 fun Context.getDeviceIp(): String {
@@ -59,7 +59,7 @@ fun Context.openAnotherApp(packageName: String) {
         try {
             startActivity(launchIntent)
         } catch (e: Exception) {
-            Logg.e { "e: $e" }
+            loggE(e)
         }
 
     }
