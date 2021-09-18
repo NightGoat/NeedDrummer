@@ -16,7 +16,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.lenta.shared.utilities.Logg
+import ru.nightgoat.needdrummer.core.utilities.loggD
 
 
 @BindingAdapter(value = ["items", "rv_config"])
@@ -24,7 +24,9 @@ fun <ItemType, BindingType : ViewDataBinding> setupRecyclerView(recyclerView: Re
                                                                 newItems: List<ItemType>?,
                                                                 dataBindingRecyclerViewConfig: DataBindingRecyclerViewConfig<BindingType>?) {
 
-    Logg.d { "newItems: ${newItems}" }
+    loggD {
+        "newItems: $newItems"
+    }
 
     if (dataBindingRecyclerViewConfig == null) {
         return
@@ -49,9 +51,7 @@ fun <ItemType, BindingType : ViewDataBinding> setupRecyclerView(recyclerView: Re
         recyclerView.layoutManager = mLayoutManager
         recyclerView.itemAnimator = null
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            recyclerView.touchscreenBlocksFocus = true
-        }
+        recyclerView.touchscreenBlocksFocus = true
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             recyclerView.defaultFocusHighlightEnabled = false
@@ -180,7 +180,7 @@ class RecyclerViewKeyHandler<T>(
         rv?.let { recyclerView ->
             lifecycleOwner?.let { lco ->
                 posInfo.observe(lco, { info ->
-                    Logg.d { "new pos: $info" }
+                    loggD { "new pos: $info" }
                     recyclerView.adapter?.notifyDataSetChanged()
 
                     if (!info.isManualClick && isCorrectPosition(info.currentPos)) {
