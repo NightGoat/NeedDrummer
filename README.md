@@ -1,5 +1,5 @@
 ## NeedDrummer
-Android app for musicians to find each other
+Android app for musicians to find each other. Example of using [SResult](https://github.com/NightGoat/SResult) MVI library
 ##### Features:
 * Kotlin
 * MVVM
