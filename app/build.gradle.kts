@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
     buildToolsVersion = Builds.BUILD_TOOLS
 
     defaultConfig {
@@ -43,7 +43,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
         languageVersion = "1.5"
         apiVersion = "1.5"
     }

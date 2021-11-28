@@ -8,8 +8,6 @@ import ru.nightgoat.needdrummer.databinding.FragmentFindBandBinding
 
 @AndroidEntryPoint
 class FindBandFragment: CoreFragment<FragmentFindBandBinding, FindBandViewModel>() {
-    override val vm: FindBandViewModel by viewModels()
-
-    override fun getLayoutId() = R.layout.fragment_find_band
-
+    override val viewModel: FindBandViewModel by viewModels()
+    override val layoutId = R.layout.fragment_find_band
 }

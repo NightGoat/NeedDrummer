@@ -1,10 +1,9 @@
 package ru.nightgoat.needdrummer.domain.auth
 
-import ru.nightgoat.needdrummer.core.platform.models.SResult
-import ru.nightgoat.needdrummer.core.utilities.ErrorResult
-import ru.nightgoat.needdrummer.core.utilities.extentions.orError
-import ru.nightgoat.needdrummer.domain.IUseCase
-import ru.nightgoat.needdrummer.models.states.ErrorType
+import com.rasalexman.sresult.common.extensions.orError
+import com.rasalexman.sresult.data.dto.SResult
+import com.rasalexman.sresult.domain.IUseCase
+import ru.nightgoat.needdrummer.models.states.AuthFailure
 import ru.nightgoat.needdrummer.models.util.Password
 import ru.nightgoat.needdrummer.providers.IStringResources
 import javax.inject.Inject
@@ -12,12 +11,12 @@ import javax.inject.Inject
 class CheckPasswordUseCase @Inject constructor(
     private val stringResources: IStringResources
 ) : ICheckPasswordUseCase {
-    override suspend fun invoke(param: Password?): SResult<Password> {
-        return param?.let { enteredPassword ->
+    override suspend fun invoke(data: Password?): SResult<Password> {
+        return data?.let { enteredPassword ->
             if (enteredPassword.value.isNotEmpty()) {
                 SResult.Success(enteredPassword)
             } else {
-                ErrorResult(type = ErrorType.EMPTY_PASSWORD)
+                AuthFailure.EmptyPassword
             }
         }.orError(
             stringResources.internalError
@@ -26,4 +25,4 @@ class CheckPasswordUseCase @Inject constructor(
 }
 
 /** UseCase that checks is password null or empty */
-interface ICheckPasswordUseCase : IUseCase.InOutSResult<Password?, Password>
+interface ICheckPasswordUseCase : IUseCase.SingleInOut<Password?, SResult<Password>>

@@ -9,7 +9,7 @@ import ru.nightgoat.needdrummer.features.account.core.CoreAuthFragment
 @AndroidEntryPoint
 class ForgotPasswordFragment: CoreAuthFragment<FragmentRegisterBinding, ForgotPasswordViewModel>() {
 
-    override val vm: ForgotPasswordViewModel by viewModels()
+    override val viewModel: ForgotPasswordViewModel by viewModels()
 
-    override fun getLayoutId() = R.layout.fragment_forgot_password
+    override val layoutId = R.layout.fragment_forgot_password
 }

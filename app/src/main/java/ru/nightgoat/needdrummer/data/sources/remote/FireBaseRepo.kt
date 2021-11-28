@@ -2,14 +2,14 @@ package ru.nightgoat.needdrummer.data.sources.remote
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.rasalexman.sresult.common.extensions.orError
+import com.rasalexman.sresult.common.extensions.toSuccessResult
+import com.rasalexman.sresult.data.base.IRemoteDataSource
+import com.rasalexman.sresult.data.dto.SResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import ru.nightgoat.needdrummer.core.platform.models.SResult
-import ru.nightgoat.needdrummer.core.utilities.extentions.orError
-import ru.nightgoat.needdrummer.core.utilities.extentions.toSuccessResult
-import ru.nightgoat.needdrummer.data.base.IRemoteSource
 import ru.nightgoat.needdrummer.models.repo.UserModel
 import ru.nightgoat.needdrummer.models.util.Email
 import ru.nightgoat.needdrummer.models.util.Password
@@ -55,7 +55,7 @@ class FireBaseRepo @Inject constructor(
     }
 }
 
-interface IFirebaseRepo : IRemoteSource {
+interface IFirebaseRepo : IRemoteDataSource {
     suspend fun login(email: Email, password: Password): SResult<UserModel>
     suspend fun register(email: Email, password: Password): SResult<UserModel>
     suspend fun resetPassword(email: Email): SResult<Boolean>

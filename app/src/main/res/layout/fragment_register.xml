@@ -6,10 +6,6 @@
         <variable
             name="vm"
             type="ru.nightgoat.needdrummer.features.account.register.RegisterViewModel" />
-
-        <variable
-            name="rvConfig"
-            type="ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingRecyclerViewConfig" />
     </data>
 
     <LinearLayout
@@ -81,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:onClick="@{() -> vm.goBack()}"
+                android:onClick="@{() -> vm.onBackClicked()}"
                 android:padding="@dimen/size_12dp"
                 android:text="@string/back" />
         </LinearLayout>

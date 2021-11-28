@@ -11,7 +11,7 @@
 
         <variable
             name="rvConfig"
-            type="ru.nightgoat.needdrummer.core.utilities.databinding.DataBindingRecyclerViewConfig" />
+            type="com.rasalexman.easyrecyclerbinding.DataBindingRecyclerViewConfig" />
     </data>
 
     <FrameLayout

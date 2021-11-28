@@ -2,11 +2,11 @@ package ru.nightgoat.needdrummer.features.account.core
 
 import androidx.databinding.ViewDataBinding
 import com.google.android.material.textfield.TextInputLayout
+import com.rasalexman.sresult.data.dto.SResult
 import ru.nightgoat.needdrummer.R
 import ru.nightgoat.needdrummer.core.CoreFragment
 import ru.nightgoat.needdrummer.core.CoreViewModel
-import ru.nightgoat.needdrummer.core.platform.models.SResult
-import ru.nightgoat.needdrummer.models.states.ErrorType
+import ru.nightgoat.needdrummer.models.states.AuthFailure
 
 abstract class CoreAuthFragment<T : ViewDataBinding, S : CoreViewModel> : CoreFragment<T, S>() {
 
@@ -19,13 +19,20 @@ abstract class CoreAuthFragment<T : ViewDataBinding, S : CoreViewModel> : CoreFr
     private val nameView: TextInputLayout?
         get() = view?.findViewById(R.id.name_il)
 
-    override fun handleError(error: SResult.ErrorResult) {
-        when (error.type) {
-            ErrorType.EMPTY_NAME -> setNameError()
-            ErrorType.EMPTY_EMAIL -> setEmptyEmailError()
-            ErrorType.EMPTY_PASSWORD -> setPasswordEmail()
-            ErrorType.BAD_EMAIL -> setWrongEmailError()
-            else -> super.handleError(error)
+    override fun onResultHandler(result: SResult<*>) {
+        if (result is AuthFailure) {
+            handleError(result)
+        } else {
+            super.onResultHandler(result)
+        }
+    }
+
+    private fun handleError(error: AuthFailure) {
+        when (error) {
+            AuthFailure.EmptyName -> setNameError()
+            AuthFailure.EmptyEmail -> setEmptyEmailError()
+            AuthFailure.EmptyPassword -> setPasswordEmail()
+            AuthFailure.BadEmail -> setWrongEmailError()
         }
     }
 

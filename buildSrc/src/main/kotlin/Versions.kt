@@ -20,6 +20,6 @@ object Versions {
     const val navigation = "2.3.5"
     const val input_mask = "6.0.0"
     const val ktlint = "10.0.0"
-    const val kex = "1.0.1"
-    const val sresult = "1.3.18"
+    const val kex = "0.1.3.4"
+    const val sresult = "1.3.31"
 }

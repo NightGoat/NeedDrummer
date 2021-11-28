@@ -1,11 +1,17 @@
 package ru.nightgoat.needdrummer.features.account.login
 
 import androidx.lifecycle.MutableLiveData
+import com.rasalexman.sresult.common.extensions.loadingResult
+import com.rasalexman.sresult.common.extensions.toNavigateResult
+import com.rasalexman.sresult.common.extensions.unsafeLazy
+import com.rasalexman.sresult.common.typealiases.AnyResult
+import com.rasalexman.sresult.data.dto.ISEvent
+import com.rasalexman.sresultpresentation.extensions.onEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ru.nightgoat.needdrummer.core.platform.models.AnyResult
-import ru.nightgoat.needdrummer.core.utilities.extentions.launchAndHandle
 import ru.nightgoat.needdrummer.domain.auth.ILoginUseCase
 import ru.nightgoat.needdrummer.features.account.core.CoreAuthViewModel
+import ru.nightgoat.needdrummer.models.util.Email
+import ru.nightgoat.needdrummer.models.util.Password
 import ru.nightgoat.needdrummer.models.util.toEmail
 import ru.nightgoat.needdrummer.models.util.toPassword
 import javax.inject.Inject
@@ -15,26 +21,44 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: ILoginUseCase
 ) : CoreAuthViewModel() {
 
-    val password = MutableLiveData("")
-
-    fun onLoginBtnClicked() {
-        launchAndHandle {
-            getLogin()
+    override val resultLiveData by unsafeLazy {
+        onEvent<LoginViewModelEvent, AnyResult> { event ->
+            emit(loadingResult())
+            val result = when (event) {
+                is LoginViewModelEvent.Register -> LoginFragmentDirections.showRegisterFragment()
+                    .toNavigateResult()
+                is LoginViewModelEvent.ForgotPassword -> LoginFragmentDirections.showForgotPasswordFragment()
+                    .toNavigateResult()
+                is LoginViewModelEvent.Login -> loginUseCase.invoke(event.loginPair)
+            }
+            emit(result)
         }
     }
 
-    private suspend fun getLogin(): AnyResult {
+    val password = MutableLiveData("")
+
+    fun onLoginBtnClicked() {
+        getLogin()
+    }
+
+    private fun getLogin() {
         val email = email.value?.toEmail()
         val password = password.value?.toPassword()
         val param = Pair(email, password)
-        return loginUseCase.invoke(param)
+        processEvent(LoginViewModelEvent.Login(param))
     }
 
     fun onRegisterBtnClicked() {
-        goTo(direction = LoginFragmentDirections.showRegisterFragment())
+        processEvent(LoginViewModelEvent.Register)
     }
 
     fun onForgotPasswordBtnClicked() {
-        goTo(direction = LoginFragmentDirections.showForgotPasswordFragment())
+        processEvent(LoginViewModelEvent.ForgotPassword)
+    }
+
+    sealed class LoginViewModelEvent : ISEvent {
+        data class Login(val loginPair: Pair<Email?, Password?>) : LoginViewModelEvent()
+        object Register : LoginViewModelEvent()
+        object ForgotPassword : LoginViewModelEvent()
     }
 }

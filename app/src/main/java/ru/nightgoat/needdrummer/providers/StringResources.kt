@@ -2,8 +2,8 @@ package ru.nightgoat.needdrummer.providers
 
 import android.content.Context
 import androidx.annotation.StringRes
+import com.rasalexman.sresult.common.extensions.unsafeLazy
 import ru.nightgoat.needdrummer.R
-import ru.nightgoat.needdrummer.core.utilities.extentions.unsafeLazy
 import javax.inject.Inject
 
 class StringResources @Inject constructor(

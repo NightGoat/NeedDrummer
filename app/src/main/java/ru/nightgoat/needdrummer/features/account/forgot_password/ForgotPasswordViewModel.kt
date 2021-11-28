@@ -1,10 +1,14 @@
 package ru.nightgoat.needdrummer.features.account.forgot_password
 
+import com.rasalexman.sresult.common.extensions.loadingResult
+import com.rasalexman.sresult.common.typealiases.AnyResult
+import com.rasalexman.sresult.data.dto.ISEvent
+import com.rasalexman.sresultpresentation.extensions.onEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ru.nightgoat.needdrummer.core.platform.models.AnyResult
-import ru.nightgoat.needdrummer.core.utilities.extentions.launchAndHandle
+import ru.nightgoat.kextensions.unsafeLazy
 import ru.nightgoat.needdrummer.domain.auth.IForgotPasswordUseCase
 import ru.nightgoat.needdrummer.features.account.core.CoreAuthViewModel
+import ru.nightgoat.needdrummer.models.util.Email
 import ru.nightgoat.needdrummer.models.util.toEmail
 import javax.inject.Inject
 
@@ -13,14 +17,21 @@ class ForgotPasswordViewModel @Inject constructor(
     private val forgotPasswordUseCase: IForgotPasswordUseCase
 ) : CoreAuthViewModel() {
 
-    private suspend fun resetPassword(): AnyResult {
+    override val resultLiveData by unsafeLazy {
+        onEvent<ForgotPasswordEvent, AnyResult> { event ->
+            emit(loadingResult())
+            emit(forgotPasswordUseCase.invoke(event.email))
+        }
+    }
+
+    private fun resetPassword() {
         val email = email.value?.toEmail()
-        return forgotPasswordUseCase.invoke(email)
+        processEvent(ForgotPasswordEvent(email))
     }
 
     fun onRememberPasswordButtonClicked() {
-        launchAndHandle {
-            resetPassword()
-        }
+        resetPassword()
     }
+
+    inner class ForgotPasswordEvent(val email: Email?) : ISEvent
 }

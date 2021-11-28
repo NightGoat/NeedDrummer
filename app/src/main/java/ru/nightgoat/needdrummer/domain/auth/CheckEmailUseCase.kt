@@ -1,12 +1,11 @@
 package ru.nightgoat.needdrummer.domain.auth
 
 import android.util.Patterns
-import ru.nightgoat.needdrummer.core.platform.models.SResult
-import ru.nightgoat.needdrummer.core.utilities.ErrorResult
-import ru.nightgoat.needdrummer.core.utilities.extentions.flatMapIfSuccess
-import ru.nightgoat.needdrummer.core.utilities.extentions.orError
-import ru.nightgoat.needdrummer.domain.IUseCase
-import ru.nightgoat.needdrummer.models.states.ErrorType
+import com.rasalexman.sresult.common.extensions.flatMapIfSuccess
+import com.rasalexman.sresult.common.extensions.orError
+import com.rasalexman.sresult.data.dto.SResult
+import com.rasalexman.sresult.domain.IUseCase
+import ru.nightgoat.needdrummer.models.states.AuthFailure
 import ru.nightgoat.needdrummer.models.util.Email
 import ru.nightgoat.needdrummer.models.util.toEmail
 import ru.nightgoat.needdrummer.providers.IStringResources
@@ -15,8 +14,8 @@ import javax.inject.Inject
 class CheckEmailUseCase @Inject constructor(
     private val stringResources: IStringResources
 ) : ICheckEmailUseCase {
-    override suspend fun invoke(param: Email?): SResult<Email> {
-        return param?.let { enteredEmail ->
+    override suspend fun invoke(data: Email?): SResult<Email> {
+        return data?.let { enteredEmail ->
             val enteredEmailValue = enteredEmail.value
             enteredEmailValue.checkIsEmailNotEmpty().flatMapIfSuccess {
                 it.checkIsEmailOk()
@@ -31,7 +30,7 @@ class CheckEmailUseCase @Inject constructor(
         return if (isOkEmail) {
             SResult.Success(this.toEmail())
         } else {
-            ErrorResult(type = ErrorType.BAD_EMAIL)
+            AuthFailure.BadEmail
         }
     }
 
@@ -39,10 +38,10 @@ class CheckEmailUseCase @Inject constructor(
         return if (this.isNotEmpty()) {
             SResult.Success(this)
         } else {
-            ErrorResult(type = ErrorType.EMPTY_EMAIL)
+            AuthFailure.EmptyEmail
         }
     }
 }
 
 /** UseCase that checks is email null or empty */
-interface ICheckEmailUseCase : IUseCase.InOutSResult<Email?, Email>
+interface ICheckEmailUseCase : IUseCase.SingleInOut<Email?, SResult<Email>>

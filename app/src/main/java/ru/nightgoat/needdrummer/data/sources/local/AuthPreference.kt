@@ -2,9 +2,9 @@ package ru.nightgoat.needdrummer.data.sources.local
 
 import android.content.Context
 import com.chibatching.kotpref.KotprefModel
-import ru.nightgoat.needdrummer.core.platform.models.AnyResult
-import ru.nightgoat.needdrummer.core.platform.models.SResult
-import ru.nightgoat.needdrummer.data.base.ILocalSource
+import com.rasalexman.sresult.common.extensions.anySuccess
+import com.rasalexman.sresult.common.typealiases.AnyResult
+import com.rasalexman.sresult.data.base.ILocalDataSource
 import ru.nightgoat.needdrummer.models.repo.UserModel
 import ru.nightgoat.needdrummer.models.util.Name
 import javax.inject.Inject
@@ -22,21 +22,21 @@ class AuthPreference @Inject constructor(context: Context): IAuthPreference, Kot
 
     override fun saveUser(user: UserModel): AnyResult {
         email = user.email.value
-        return SResult.AnySuccess
+        return anySuccess()
     }
 
     override fun saveName(name: Name): AnyResult {
         this.name = name.value
-        return SResult.AnySuccess
+        return anySuccess()
     }
 
     override fun clearAuth(): AnyResult {
         email = ""
-        return SResult.AnySuccess
+        return anySuccess()
     }
 }
 
-interface IAuthPreference : ILocalSource {
+interface IAuthPreference : ILocalDataSource {
     fun isAuthenticated(): Boolean
     fun saveUser(user: UserModel): AnyResult
     fun saveName(name: Name): AnyResult
